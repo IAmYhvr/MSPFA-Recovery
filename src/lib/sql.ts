@@ -1,3 +1,7 @@
 import initSqlJs from "sql.js/dist/sql-asm";
 
-export const SQL = await initSqlJs();
+const SQL = initSqlJs();
+
+export async function getSQL() {
+	return await SQL;
+}

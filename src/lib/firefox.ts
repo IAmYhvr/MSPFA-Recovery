@@ -1,4 +1,4 @@
-import { SQL } from "./sql";
+import { getSQL } from "./sql";
 
 // const DESIRED_PROPS = "og:title og:image og:description".split(" ");
 const store = {};
@@ -6,6 +6,7 @@ const store = {};
 // const cachedUsers = {};
 
 export async function processDB(file: File) {
+	const SQL = await getSQL();
 	const buf = await file.arrayBuffer();
 	const db = new SQL.Database(new Uint8Array(buf));
 	const query = db.exec(
