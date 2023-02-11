@@ -1,4 +1,4 @@
-import initSqlJs from "sql.js/dist/sql-asm";
+import { SQL } from "./sql";
 
 // const DESIRED_PROPS = "og:title og:image og:description".split(" ");
 const store = {};
@@ -6,7 +6,6 @@ const store = {};
 // const cachedUsers = {};
 
 export async function processDB(file: File) {
-	const SQL = await initSqlJs();
 	const buf = await file.arrayBuffer();
 	const db = new SQL.Database(new Uint8Array(buf));
 	const query = db.exec(

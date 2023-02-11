@@ -29,7 +29,7 @@
 
 	function resultsFound({ detail }) {
 		results = detail;
-		stage = 2;
+		stage = 3;
 	}
 
 	async function sendData() {
@@ -124,17 +124,21 @@
 				</p>
 				<button on:click={back}>Back</button>
 			{/if}
-		{:else if stage === 2}
+		{:else if stage === 3}
 			<h2>Almost done...</h2>
 			<p>
 				Here's <i>exactly</i> what you're sending, in case you want to check
 				for yourself.
 			</p>
 			<button on:click={sendData} class="CLICKME">Send data</button
-			><button on:click={back}>Back</button>
+			><button
+				on:click={() => {
+					stage = 0;
+				}}>Back to start</button
+			>
 
 			<pre>{results}</pre>
-		{:else if stage === 3}
+		{:else if stage === 4}
 			<h2>Thank you!</h2>
 			<p>
 				Thank you so much for helping. Your submitted data has been
