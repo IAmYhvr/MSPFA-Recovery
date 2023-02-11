@@ -39,7 +39,9 @@
 				Profile Path
 			</b>.<br /><br />
 			On Windows, you can copy the path, press <code>Windows R</code>, and
-			paste it in the box that pops up.
+			paste it in the box that pops up.<br /><br />
+			On macOS, you can copy the path, open Finder, press
+			<code>Command-Shift-G</code>, and paste it in the box that pops up.
 		</p>
 		<button on:click={next}>Done</button>
 	{:else if stage === 3}
@@ -51,12 +53,20 @@
 	{:else if stage === 4}
 		<p>
 			Next, find the folder named <code>Cache</code> in the same folder.
-			Drag and drop that in the rectangle again:<br />
-			<i
-				>If you're on Linux, the folder will be located at <code
-					>~/.cache/INSERT-BROWSER-NAME/Default/</code
-				>.</i
-			>
+			Drag and drop that in the rectangle again:<br /><br />
+			<details>
+				<summary>Not on Windows?</summary>
+				If you're on macOS, the folder will be located at
+				<code>~/Library/Caches/INSERT-BROWSER-NAME/Default/</code>.<br
+				/>If you don't know how to get to this folder, you can open
+				Finder, press <code>Command Shift G</code>, paste in
+				<code>~/Library/Caches/</code>, and look for the name of your
+				browser. You may need to open a few folders to find the one
+				named <code>Cache</code> inside that.
+				<br /><br />
+				If you're on Linux, the folder will be located at
+				<code>~/.cache/INSERT-BROWSER-NAME/Default/</code>.
+			</details>
 		</p>
 		<Dropbox on:data={({ detail }) => dispatcher("data", detail)} />
 	{/if}
