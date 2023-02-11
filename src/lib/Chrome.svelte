@@ -11,6 +11,10 @@
 	function next() {
 		stage++;
 	}
+
+	function back() {
+		stage--;
+	}
 </script>
 
 <div class="browser-specific">
@@ -26,6 +30,7 @@
 			</p>
 		{/if}
 		<button on:click={next}>Done</button>
+		<button on:click={() => dispatcher("fuck")}>Back</button>
 	{:else if stage === 1}
 		<p>
 			Look for the text that says "<b>Profile{isOpera ? "" : " Path"}:</b
@@ -33,6 +38,7 @@
 		</p>
 		<img src="chrome-step2.png" width="500" alt="" />
 		<button on:click={next}>Found it</button>
+		<button on:click={back}>Back</button>
 	{:else if stage === 2}
 		<p>
 			Open your file manager up to the directory listed as <b>
@@ -44,12 +50,14 @@
 			<code>Command-Shift-G</code>, and paste it in the box that pops up.
 		</p>
 		<button on:click={next}>Done</button>
+		<button on:click={back}>Back</button>
 	{:else if stage === 3}
 		<p>
 			Look for the file named <code>History</code> in the folder that popped
 			up. After you've found it, drag and drop it onto the blue rectangle below:
 		</p>
 		<Dropbox on:data={next} />
+		<button on:click={back}>Back</button>
 	{:else if stage === 4}
 		<p>
 			Next, find the folder named <code>Cache</code> in the same folder.
@@ -69,5 +77,6 @@
 			</details>
 		</p>
 		<Dropbox on:data={({ detail }) => dispatcher("data", detail)} />
+		<button on:click={back}>Back</button>
 	{/if}
 </div>

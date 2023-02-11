@@ -15,6 +15,10 @@
 		stage++;
 	}
 
+	function back() {
+		stage--;
+	}
+
 	function go(str: Browser, fuckOpera = false) {
 		return () => {
 			next();
@@ -48,11 +52,19 @@
 				Unfortunately, this tool doesn't work on mobile.<br />
 				If you use MSPFA on PC, feel free to use it there!
 			</p>
+			<button
+				on:click={() => {
+					isMobile = false;
+					back();
+				}}>Back</button
+			>
 		{:else if stage === 0}
 			<h1>MSPFA Recovery Tool</h1>
 			<p>
-				This tool retrieves from your browser lost data we can use to help recover MSPFA.<br />
-				It's sent anonymously, and you can see exactly what data will be sent before you send it.
+				This tool retrieves from your browser lost data we can use to
+				help recover MSPFA.<br />
+				It's sent anonymously, and you can see exactly what data will be
+				sent before you send it.
 			</p>
 			<button on:click={next}>Computer</button>
 			<button
@@ -91,24 +103,35 @@
 					on:select={go("chromium")}
 				/>
 			</grid>
+			<button on:click={back}>Back</button>
 		{:else if stage === 2}
 			{#if browser === "firefox"}
-				<Firefox on:data={resultsFound} />
+				<Firefox on:data={resultsFound} on:fuck={back} />
 			{:else if browser === "chromium"}
-				<Chrome on:data={resultsFound} {isOpera} />
+				<Chrome on:data={resultsFound} on:fuck={back} {isOpera} />
 			{:else if browser === "safari"}
 				<p>
-					Unfortunately we couldn't find the time to support Safari. Sorry about that.<br />
-					If you are a Safari user and think your browsing history and cache might have a lot of useful MSPFA data in it, let us know in the #mspfa-recovery channel in <a href="https://discord.gg/K8yT2Ft4UU" target="_blank" rel="noreferrer">our Discord server</a>.
+					Unfortunately we couldn't find the time to support Safari.
+					Sorry about that.<br />
+					If you are a Safari user and think your browsing history and
+					cache might have a lot of useful MSPFA data in it, let us know
+					in the #mspfa-recovery channel in
+					<a
+						href="https://discord.gg/K8yT2Ft4UU"
+						target="_blank"
+						rel="noreferrer">our Discord server</a
+					>.
 				</p>
+				<button on:click={back}>Back</button>
 			{/if}
 		{:else if stage === 2}
 			<h2>Almost done...</h2>
 			<p>
-				Here's <i>exactly</i> what you're sending, in case you want to
-				check for yourself.
+				Here's <i>exactly</i> what you're sending, in case you want to check
+				for yourself.
 			</p>
-			<button on:click={sendData} class="CLICKME">Send data</button>
+			<button on:click={sendData} class="CLICKME">Send data</button
+			><button on:click={back}>Back</button>
 
 			<pre>{results}</pre>
 		{:else if stage === 3}
@@ -128,9 +151,19 @@
 	</div>
 </main>
 <div id="footer">
-	made for <a href="https://mspfa.com" target="_blank" rel="noreferrer">mspfa</a> |
-	<a href="https://discord.gg/K8yT2Ft4UU" target="_blank" rel="noreferrer">discord</a>
-	| <a href="https://github.com/YhvrWasTaken/MSPFA-Recovery" target="_blank" rel="noreferrer">source code</a>
+	made for <a href="https://mspfa.com" target="_blank" rel="noreferrer"
+		>mspfa</a
+	>
+	|
+	<a href="https://discord.gg/K8yT2Ft4UU" target="_blank" rel="noreferrer"
+		>discord</a
+	>
+	|
+	<a
+		href="https://github.com/YhvrWasTaken/MSPFA-Recovery"
+		target="_blank"
+		rel="noreferrer">source code</a
+	>
 </div>
 
 <style>

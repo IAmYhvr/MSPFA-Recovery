@@ -9,6 +9,10 @@
 	function next() {
 		stage++;
 	}
+
+	function back() {
+		stage--;
+	}
 </script>
 
 <div class="browser-specific">
@@ -16,6 +20,7 @@
 	{#if stage === 0}
 		<p>Open a new tab, and go to the URL <code>about:profiles</code>.</p>
 		<button on:click={next}>Done</button>
+		<button on:click={() => dispatcher("fuck")}>Back</button>
 	{:else if stage === 1}
 		<p>
 			Look for the profile that says "<b
@@ -24,10 +29,12 @@
 		</p>
 		<img src="firefox-step2.png" width="500" alt="" />
 		<button on:click={next}>Found it</button>
+		<button on:click={back}>Back</button>
 	{:else if stage === 2}
 		Click the <span class="fake-btn">Open Directory</span> button next to
 		<b>Root Directory</b>.
 		<button on:click={next}>Done</button>
+		<button on:click={back}>Back</button>
 	{:else if stage === 3}
 		<p>
 			Look for the file named <code>places.sqlite</code> in the folder that
@@ -35,8 +42,9 @@
 			below:
 		</p>
 		<!-- ({detail}) => dispatcher("data", detail) -->
-		<Dropbox on:data={({detail}) => dispatcher("data", detail)} />
-	<!-- {:else if stage === 4}
+		<Dropbox on:data={({ detail }) => dispatcher("data", detail)} />
+		<button on:click={back}>Back</button>
+		<!-- {:else if stage === 4}
 		<p>
 			Go back to the <code>about:profiles</code> tab you opened earlier,
 			and find the same profile you used before. Click the
