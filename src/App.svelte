@@ -45,18 +45,14 @@
 	<div>
 		{#if isMobile}
 			<p>
-				Unfortunately, this tool can't be used to help on mobile.<br
-				/>If you've used MSPFA on a computer, come back on that.
+				Unfortunately, this tool doesn't work on mobile.<br />
+				If you use MSPFA on PC, feel free to use it there!
 			</p>
 		{:else if stage === 0}
 			<h1>MSPFA Recovery Tool</h1>
 			<p>
-				This tool scans your browser's files for data on all the times
-				you've been on MSPFA.<br />
-				It's anonymous, and immediately disregards data from every other
-				site.<br />
-				You will be able to see exactly what data you're sharing before you
-				send it.
+				This tool retrieves from your browser lost data we can use to help recover MSPFA.<br />
+				It's sent anonymously, and you can see exactly what data will be sent before you send it.
 			</p>
 			<button on:click={next}>Computer</button>
 			<button
@@ -102,16 +98,14 @@
 				<Chrome on:data={resultsFound} {isOpera} />
 			{:else if browser === "safari"}
 				<p>
-					Unfortunately, it wasn't worth it for me to add Safari
-					support to this.<br />Simply not enough people use it.<br
-					/>If you're super super big on MSPFA, and may have a TON of
-					data in Safari, say so on the Discord.
+					Unfortunately we couldn't find the time to support Safari. Sorry about that.<br />
+					If you are a Safari user and think your browsing history and cache might have a lot of useful MSPFA data in it, let us know in the #mspfa-recovery channel in <a href="https://discord.gg/K8yT2Ft4UU" target="_blank" rel="noreferrer">our Discord server</a>.
 				</p>
 			{/if}
 		{:else if stage === 2}
 			<h2>Almost done...</h2>
 			<p>
-				Here's <i>exactly</i> what's you're sending, in case you want to
+				Here's <i>exactly</i> what you're sending, in case you want to
 				check for yourself.
 			</p>
 			<button on:click={sendData} class="CLICKME">Send data</button>
@@ -122,7 +116,7 @@
 			<p>
 				Thank you so much for helping. Your submitted data has been
 				stored and will be analyzed at a later time.<br />
-				You may now close this tab safely.
+				You're now good to close this tab.
 			</p>
 		{:else if stage === -1}
 			<h2>Whoops.</h2>
@@ -134,9 +128,9 @@
 	</div>
 </main>
 <div id="footer">
-	made for <a href="https://mspfa.com">mspfa</a> |
-	<a href="https://discord.gg/K8yT2Ft4UU">discord</a>
-	| <a href="https://github.com/YhvrWasTaken/MSPFA-Recovery">source code</a>
+	made for <a href="https://mspfa.com" target="_blank" rel="noreferrer">mspfa</a> |
+	<a href="https://discord.gg/K8yT2Ft4UU" target="_blank" rel="noreferrer">discord</a>
+	| <a href="https://github.com/YhvrWasTaken/MSPFA-Recovery" target="_blank" rel="noreferrer">source code</a>
 </div>
 
 <style>
