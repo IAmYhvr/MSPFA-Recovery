@@ -1,0 +1,1 @@
+cp -r dist ../backend/www
