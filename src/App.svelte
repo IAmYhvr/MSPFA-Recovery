@@ -1,13 +1,12 @@
 <script lang="ts">
 	import Chrome from "./lib/Chrome.svelte";
 	import Firefox from "./lib/Firefox.svelte";
-	import { mobileAndTabletCheck } from "./lib/isMobile";
 
 	type Browser = "chromium" | "firefox" | "safari" | "unknown";
 
 	let stage = 0;
 	let browser: Browser = "unknown";
-	let isMobile = mobileAndTabletCheck();
+	let isMobile = false;
 	let results = "";
 
 	const { userAgent } = window.navigator;
@@ -73,9 +72,17 @@
 					the Discord.
 				</p>
 			{:else}
-				<button on:click={next}>Got it</button>
+				<button on:click={next}>Computer</button>
+				<button
+					on:click={() => {
+						isMobile = true;
+						next();
+					}}>Mobile</button
+				>
 			{/if}
 		{:else if stage === 1}
+			<button on:click={next}>TODO browser picker</button>
+		{:else if stage === 2}
 			{#if browser === "firefox"}
 				<Firefox on:data={resultsFound} />
 			{:else if browser === "chromium"}
@@ -99,7 +106,10 @@
 			</p>
 		{:else if stage === -1}
 			<h2>Whoops.</h2>
-			<p>Something went wrong with sending the data.<br />Please report this on the Discord.</p>
+			<p>
+				Something went wrong with sending the data.<br />Please report
+				this on the Discord.
+			</p>
 		{/if}
 	</div>
 </main>
