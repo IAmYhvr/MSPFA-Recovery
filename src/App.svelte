@@ -11,14 +11,6 @@
 	let isOpera = false;
 	let results = "";
 
-	const { userAgent } = window.navigator;
-	if (userAgent.includes("Firefox")) browser = "firefox";
-	else if (userAgent.includes("Chrome")) browser = "chromium";
-	else if (userAgent.includes("Safari")) browser = "safari";
-	else browser = "unknown";
-
-	console.log(window.navigator.userAgent);
-
 	function next() {
 		stage++;
 	}
@@ -59,37 +51,20 @@
 		{:else if stage === 0}
 			<h1>MSPFA Recovery Tool</h1>
 			<p>
-				This tool scans your browser's files for all the times you've
-				been on MSPFA,<br /> to gather data that may have been lost.<br
-				/>
-				It immediately disregards data from every other site.<br />
-				After it's done processing, it will be anonymously sent to us.<br
-				/>
+				This tool scans your browser's files for data on all the times
+				you've been on MSPFA.<br />
+				It's anonymous, and immediately disregards data from every other
+				site.<br />
 				You will be able to see exactly what data you're sharing before you
-				actually share it.
+				send it.
 			</p>
-			{#if browser === "unknown"}
-				<p>
-					You baffle me. You aren't using Chromium, Firefox, or
-					Safari?! There's nothing you can do to help, sorry :(
-				</p>
-			{:else if browser === "safari"}
-				<p>
-					Unfortunately, it wasn't worth the time investment for me to
-					add Safari support to this.<br />Simply not enough people
-					use it.<br />If you're super super big on MSPFA, and may
-					have a TON of data in Safari, say so in #mspfa-recovery on
-					the Discord.
-				</p>
-			{:else}
-				<button on:click={next}>Computer</button>
-				<button
-					on:click={() => {
-						isMobile = true;
-						next();
-					}}>Mobile</button
-				>
-			{/if}
+			<button on:click={next}>Computer</button>
+			<button
+				on:click={() => {
+					isMobile = true;
+					next();
+				}}>Mobile</button
+			>
 		{:else if stage === 1}
 			<h2>Browsers</h2>
 			<p>Please select the browser that you're recovering data from.</p>
@@ -125,6 +100,13 @@
 				<Firefox on:data={resultsFound} />
 			{:else if browser === "chromium"}
 				<Chrome on:data={resultsFound} {isOpera} />
+			{:else if browser === "safari"}
+				<p>
+					Unfortunately, it wasn't worth it for me to add Safari
+					support to this.<br />Simply not enough people use it.<br
+					/>If you're super super big on MSPFA, and may have a TON of
+					data in Safari, say so on the Discord.
+				</p>
 			{/if}
 		{:else if stage === 2}
 			<h2>Almost done...</h2>
