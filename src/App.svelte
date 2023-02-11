@@ -106,7 +106,7 @@
 <div id="footer">
 	made for <a href="https://mspfa.com">mspfa</a> |
 	<a href="https://discord.gg/K8yT2Ft4UU">discord</a>
-	| <a href="TODO_PUT_SOURCE_URL">source code</a>
+	| <a href="https://github.com/YhvrWasTaken/MSPFA-Recovery">source code</a>
 </div>
 
 <style>
