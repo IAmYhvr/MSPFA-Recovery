@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BrowserCard from "./lib/BrowserCard.svelte";
 	import Chrome from "./lib/Chrome.svelte";
 	import Firefox from "./lib/Firefox.svelte";
 
@@ -7,6 +8,7 @@
 	let stage = 0;
 	let browser: Browser = "unknown";
 	let isMobile = false;
+	let isOpera = false;
 	let results = "";
 
 	const { userAgent } = window.navigator;
@@ -19,6 +21,14 @@
 
 	function next() {
 		stage++;
+	}
+
+	function go(str: Browser, fuckOpera = false) {
+		return () => {
+			next();
+			browser = str;
+			isOpera = fuckOpera;
+		};
 	}
 
 	function resultsFound({ detail }) {
@@ -81,12 +91,40 @@
 				>
 			{/if}
 		{:else if stage === 1}
-			<button on:click={next}>TODO browser picker</button>
+			<h2>Browsers</h2>
+			<p>Please select the browser that you're recovering data from.</p>
+			<grid id="browsers">
+				<BrowserCard
+					browsers={["logos:chrome"]}
+					on:select={go("chromium")}
+				/>
+				<BrowserCard
+					browsers={["logos:firefox"]}
+					on:select={go("firefox")}
+				/>
+				<BrowserCard
+					browsers={["logos:safari"]}
+					on:select={go("safari")}
+				/>
+				<BrowserCard
+					browsers={["logos:opera"]}
+					on:select={go("chromium", true)}
+				/>
+				<BrowserCard
+					browsers={[
+						"logos:microsoft-edge",
+						"logos:brave",
+						"CHROMIUM",
+						"mdi:dots-horizontal",
+					]}
+					on:select={go("chromium")}
+				/>
+			</grid>
 		{:else if stage === 2}
 			{#if browser === "firefox"}
 				<Firefox on:data={resultsFound} />
 			{:else if browser === "chromium"}
-				<Chrome on:data={resultsFound} />
+				<Chrome on:data={resultsFound} {isOpera} />
 			{/if}
 		{:else if stage === 2}
 			<h2>Almost done...</h2>

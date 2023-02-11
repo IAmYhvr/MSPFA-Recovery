@@ -4,7 +4,7 @@
 
 	let dispatcher = createEventDispatcher();
 
-	let isOpera = navigator.userAgent.includes("OPR");
+	export let isOpera: boolean;
 
 	let stage = 0;
 

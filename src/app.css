@@ -87,3 +87,9 @@ pre {
 	background: #333;
 	border-radius: 15px 0 0 0;
 }
+
+#browsers {
+	display: grid;
+	grid-template: repeat(1, 1fr) / repeat(5, 1fr);
+	gap: 10px;
+}
