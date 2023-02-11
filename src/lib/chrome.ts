@@ -2,7 +2,6 @@ import initSqlJs from "sql.js/dist/sql-asm";
 import {
 	acquireFruitsOfYourLabor,
 	readCacheFile,
-	setCacheGoalFn,
 	setCacheReadFn,
 } from "./readCacheFile";
 
