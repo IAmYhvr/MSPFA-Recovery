@@ -79,7 +79,7 @@ export function traverseFuckingTree(Cache: FileSystemDirectoryEntry) {
 
 function transformStore(store) {
 	let out = "Chrome\n";
-	const { adventures, users } = acquireFruitsOfYourLabor();
+	const { adventures, users, css, js } = acquireFruitsOfYourLabor();
 	for (const id in adventures) {
 		out += `Adventure #${id}: ${JSON.stringify(adventures[id])}\n`;
 	}
@@ -87,6 +87,14 @@ function transformStore(store) {
 	for (const id in store) {
 		if (!(id in adventures))
 			out += `Adventure #${id}: ${JSON.stringify(store[id])}\n`;
+	}
+
+	for (const id in css) {
+		out += `Style #${id}: ${JSON.stringify(css[id])}\n`;
+	}
+
+	for (const id in js) {
+		out += `Script #${id}: ${JSON.stringify(js[id])}\n`;
 	}
 
 	for (const id in users) {
