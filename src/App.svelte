@@ -3,7 +3,7 @@
 	import Chrome from "./lib/Chrome.svelte";
 	import Firefox from "./lib/Firefox.svelte";
 
-	type Browser = "chromium" | "firefox" | "safari" | "unknown";
+	type Browser = "chrome" | "chromium" | "firefox" | "safari" | "unknown";
 
 	let stage = 0;
 	let browser: Browser = "unknown";
@@ -21,7 +21,7 @@
 
 	function go(str: Browser, fuckOpera = false) {
 		return () => {
-			next();
+			stage = 2;
 			browser = str;
 			isOpera = fuckOpera;
 		};
@@ -79,7 +79,7 @@
 			<grid id="browsers">
 				<BrowserCard
 					browsers={["logos:chrome"]}
-					on:select={go("chromium")}
+					on:select={go("chrome")}
 				/>
 				<BrowserCard
 					browsers={["logos:firefox"]}
@@ -109,6 +109,16 @@
 				<Firefox on:data={resultsFound} on:fuck={back} />
 			{:else if browser === "chromium"}
 				<Chrome on:data={resultsFound} on:fuck={back} {isOpera} />
+			{:else if browser === "chrome"}
+				<p>
+					Are you logged in to your browser through Google?<br />
+					<button
+						on:click={() => {
+							stage = -2;
+						}}>Yes</button
+					>
+					<button on:click={go("chromium")}>No</button>
+				</p>
 			{:else if browser === "safari"}
 				<p>
 					Unfortunately we couldn't find the time to support Safari.
@@ -150,6 +160,12 @@
 			<p>
 				Something went wrong with sending the data.<br />Please report
 				this on the Discord.
+			</p>
+		{:else if stage === -2}
+			<h2>Whoops.</h2>
+			<p>
+				There's another script in the works for extracting data from
+				Chrome if you're logged in. Stay tuned!
 			</p>
 		{/if}
 	</div>
