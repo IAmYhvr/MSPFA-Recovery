@@ -121,7 +121,7 @@
 				<Chrome on:data={resultsFound} on:fuck={back} {isOpera} />
 			{:else if browser === "chrome"}
 				<p>
-					Are you logged in to your browser through Google?
+					Are you logged into Google in your browser?
 					<br /><br />
 					<button
 						on:click={() => {
