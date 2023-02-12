@@ -15,7 +15,7 @@
 	window.progressUpdate = (x, y) => {
 		progressValue = x;
 		maxProgress = y;
-	}
+	};
 
 	function next() {
 		stage++;
@@ -65,9 +65,11 @@
 			Look for the file named <code>History</code> in the folder that popped
 			up. After you've found it, drag and drop it onto the blue rectangle below:
 		</p>
-		<Dropbox on:data={dropFirst} />
 		{#if firstDropped}
+			Uploaded successfully!<br />
 			<button on:click={next}>Next</button>
+		{:else}
+			<Dropbox on:data={dropFirst} />
 		{/if}
 		<button on:click={back}>Back</button>
 	{:else if stage === 3}
