@@ -61,8 +61,8 @@
 		{:else if stage === 0}
 			<h1>MSPFA Recovery Tool</h1>
 			<p>
-				This tool retrieves from your browser lost data we can use to
-				help recover MSPFA.<br />
+				This tool retrieves lost data from your browser that we can use
+				to help recover MSPFA.<br />
 				It's sent anonymously, and you can see exactly what data will be
 				sent before you send it.
 			</p>
