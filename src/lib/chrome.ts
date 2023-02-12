@@ -46,7 +46,7 @@ export async function processDB(file: File) {
 let theRes;
 let cacheGoal = 0;
 let cacheDone = 0;
-let queue = [];
+let queue: FileSystemFileEntry[] = [];
 const cacheRead = () => {
 	cacheDone++;
 	// @ts-expect-error
@@ -76,6 +76,7 @@ function recurseReader(
 			entries.forEach(entry => {
 				if (!entry.isFile) return;
 				cacheGoal++;
+				// @ts-expect-error
 				queue.push(entry);
 			});
 
