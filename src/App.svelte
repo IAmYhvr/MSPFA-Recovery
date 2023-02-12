@@ -27,6 +27,13 @@
 		};
 	}
 
+	function goplat(mobile = false) {
+		return () => {
+			stage = 1;
+			isMobile = mobile;
+		};
+	}
+
 	function resultsFound({ detail }) {
 		results = detail;
 		stage = 3;
@@ -64,15 +71,18 @@
 				This tool retrieves lost data from your browser that we can use
 				to help recover MSPFA.<br />
 				It's sent anonymously, and you can see exactly what data will be
-				sent before you send it.
+				sent before you send it.<br /><br />
+				Which platform are you on?
 			</p>
-			<button on:click={next}>Computer</button>
+			<button class="big" on:click={goplat()}>Computer</button>
+			<button class="big" on:click={goplat(true)}>Phone/Tablet</button>
+			<!-- <button on:click={next}>Computer</button>
 			<button
 				on:click={() => {
 					isMobile = true;
 					next();
 				}}>Mobile</button
-			>
+			> -->
 		{:else if stage === 1}
 			<h2>Browsers</h2>
 			<p>Please select the browser that you're recovering data from.</p>
@@ -111,7 +121,8 @@
 				<Chrome on:data={resultsFound} on:fuck={back} {isOpera} />
 			{:else if browser === "chrome"}
 				<p>
-					Are you logged in to your browser through Google?<br />
+					Are you logged in to your browser through Google?
+					<br /><br />
 					<button
 						on:click={() => {
 							stage = -2;

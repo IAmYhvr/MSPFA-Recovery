@@ -32,7 +32,7 @@
 		<button on:click={back}>Back</button>
 	{:else if stage === 2}
 		Click the <span class="fake-btn">Open Directory</span> button next to
-		<b>Root Directory</b>.
+		<b>Root Directory</b>.<br /><br />
 		<button on:click={next}>Done</button>
 		<button on:click={back}>Back</button>
 	{:else if stage === 3}
