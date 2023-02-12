@@ -6,6 +6,7 @@ import {
 } from "./readCacheFile";
 
 const store = {};
+const MAINTENANCE_START = 1675433420000;
 
 export async function processDB(file: File) {
 	const SQL = await getSQL();
@@ -25,6 +26,7 @@ export async function processDB(file: File) {
 			// Chrome timestamps start in the year 1601. Why?
 			visitTimestamp -= 11644473600000;
 		}
+		if (visitTimestamp > MAINTENANCE_START) return;
 
 		let storyId = parseInt(new URL(url.toString()).searchParams.get("s"));
 

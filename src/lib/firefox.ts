@@ -1,5 +1,7 @@
 import { getSQL } from "./sql";
 
+const MAINTENANCE_START = 1675433420000;
+
 // const DESIRED_PROPS = "og:title og:image og:description".split(" ");
 const store = {};
 // const cachedAdventures = {};
@@ -36,6 +38,8 @@ export async function processDB(file: File) {
 		// STFU Typescript
 		visitTimestamp = parseInt(visitTimestamp.toString());
 		visitTimestamp /= 1000;
+
+		if (visitTimestamp > MAINTENANCE_START) return;
 
 		let storyId = parseInt(new URL(url.toString()).searchParams.get("s"));
 

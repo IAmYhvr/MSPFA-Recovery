@@ -2,6 +2,7 @@ import { parseCachedFile } from "./parseChromeCache";
 import { Buffer } from "buffer";
 
 const DESIRED_PROPS = "og:title og:image og:description".split(" ");
+const MAINTENANCE_START = 1675433420000;
 const cachedAdventures = {};
 const cachedUsers = {};
 const cachedJS = {};
@@ -13,6 +14,11 @@ export async function readCacheFile(file: File) {
 	let cacheFile = parseCachedFile(Buffer.from(rawFileContents));
 	let stringContent = cacheFile.content?.toString();
 	let resourceUrl = cacheFile.url.split(" ")[2];
+
+	if (new Date(cacheFile.headers?.["date"]).getTime() > MAINTENANCE_START) {
+		cacheRead();
+		return;
+	}
 
 	if (cacheFile.headers?.["content-type"] !== "text/html") {
 		cacheRead();
