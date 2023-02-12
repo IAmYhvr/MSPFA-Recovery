@@ -52,8 +52,8 @@ const cacheRead = () => {
 	// @ts-expect-error
 	window.progressUpdate(cacheDone, cacheGoal);
 	if (cacheGoal === cacheDone) return allDone();
-	setTimeout(tickQueue, 100);
-	// tickQueue();
+	// setTimeout(tickQueue, 100);
+	tickQueue();
 };
 setCacheReadFn(cacheRead);
 function tickQueue() {
@@ -64,6 +64,25 @@ function tickQueue() {
 function allDone() {
 	theRes(transformStore(store));
 }
+function recurseReader(
+	reader: FileSystemDirectoryReader,
+	entries: FileSystemEntry[] = []
+) {
+	reader.readEntries(newEntries => {
+		if (newEntries.length > 0)
+			recurseReader(reader, entries.concat(newEntries));
+		else {
+			console.log(entries.length);
+			entries.forEach(entry => {
+				if (!entry.isFile) return;
+				cacheGoal++;
+				queue.push(entry);
+			});
+
+			cacheRead();
+		}
+	});
+}
 
 export function traverseFuckingTree(Cache: FileSystemDirectoryEntry) {
 	// Weird folder names to match the folder names on disk
@@ -72,17 +91,7 @@ export function traverseFuckingTree(Cache: FileSystemDirectoryEntry) {
 		"Cache_Data",
 		{},
 		(Cache_Data: FileSystemDirectoryEntry) => {
-			const reader = Cache_Data.createReader();
-			reader.readEntries((entries: FileSystemEntry[]) => {
-				entries.forEach(entry => {
-					if (!entry.isFile) return;
-					cacheGoal++;
-					queue.push(entry);
-				});
-
-				cacheRead();
-				// for (let i = 0; i < 10; i++) cacheRead();
-			});
+			recurseReader(Cache_Data.createReader());
 		}
 	);
 
