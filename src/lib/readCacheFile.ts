@@ -10,6 +10,11 @@ const cachedCSS = {};
 
 const parser = new DOMParser();
 export async function readCacheFile(file: File) {
+	if (file.size > 1024 * 1024) {
+		cacheRead();
+		return;
+	}
+
 	let rawFileContents = await file.arrayBuffer();
 	let cacheFile = parseCachedFile(Buffer.from(rawFileContents));
 	let stringContent = cacheFile.content?.toString();
