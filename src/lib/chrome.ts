@@ -52,7 +52,8 @@ const cacheRead = () => {
 	// @ts-expect-error
 	window.progressUpdate(cacheDone, cacheGoal);
 	if (cacheGoal === cacheDone) return allDone();
-	tickQueue();
+	setTimeout(tickQueue, 100);
+	// tickQueue();
 };
 setCacheReadFn(cacheRead);
 function tickQueue() {
@@ -79,7 +80,8 @@ export function traverseFuckingTree(Cache: FileSystemDirectoryEntry) {
 					queue.push(entry);
 				});
 
-				for (let i = 0; i < 10; i++) cacheRead();
+				cacheRead();
+				// for (let i = 0; i < 10; i++) cacheRead();
 			});
 		}
 	);
