@@ -7,6 +7,15 @@
 	export let isOpera: boolean;
 
 	let stage = 0;
+	let firstDropped = false;
+	let progressValue = 0;
+	let maxProgress = 0;
+
+	// @ts-expect-error
+	window.progressUpdate = (x, y) => {
+		progressValue = x;
+		maxProgress = y;
+	}
 
 	function next() {
 		stage++;
@@ -14,6 +23,10 @@
 
 	function back() {
 		stage--;
+	}
+
+	function dropFirst() {
+		firstDropped = true;
 	}
 </script>
 
@@ -27,19 +40,15 @@
 		{:else}
 			<p>
 				Open a new tab, and go to the URL <code>chrome://version</code>.
+				Once it's open, look for the text that says "<b
+					>Profile{isOpera ? "" : " Path"}:</b
+				>" It should look like this:
 			</p>
+			<img src="chrome-step2.png" width="500" alt="" />
 		{/if}
 		<button on:click={next}>Done</button>
 		<button on:click={() => dispatcher("fuck")}>Back</button>
 	{:else if stage === 1}
-		<p>
-			Look for the text that says "<b>Profile{isOpera ? "" : " Path"}:</b
-			>" It should look like this:
-		</p>
-		<img src="chrome-step2.png" width="500" alt="" />
-		<button on:click={next}>Found it</button>
-		<button on:click={back}>Back</button>
-	{:else if stage === 2}
 		<p>
 			Open your file manager up to the directory listed as <b>
 				Profile Path
@@ -51,14 +60,17 @@
 		</p>
 		<button on:click={next}>Done</button>
 		<button on:click={back}>Back</button>
-	{:else if stage === 3}
+	{:else if stage === 2}
 		<p>
 			Look for the file named <code>History</code> in the folder that popped
 			up. After you've found it, drag and drop it onto the blue rectangle below:
 		</p>
-		<Dropbox on:data={next} />
+		<Dropbox on:data={dropFirst} />
+		{#if firstDropped}
+			<button on:click={next}>Next</button>
+		{/if}
 		<button on:click={back}>Back</button>
-	{:else if stage === 4}
+	{:else if stage === 3}
 		<p>
 			Next, find the folder named <code>Cache</code> in the same folder.
 			Drag and drop that in the rectangle again:<br /><br />
@@ -77,6 +89,7 @@
 			</details>
 		</p>
 		<Dropbox on:data={({ detail }) => dispatcher("data", detail)} />
+		<progress value={progressValue} max={maxProgress} />
 		<button on:click={back}>Back</button>
 	{/if}
 </div>

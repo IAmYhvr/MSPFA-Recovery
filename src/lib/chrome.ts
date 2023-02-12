@@ -46,10 +46,20 @@ export async function processDB(file: File) {
 let theRes;
 let cacheGoal = 0;
 let cacheDone = 0;
-setCacheReadFn(() => {
+let queue = [];
+const cacheRead = () => {
 	cacheDone++;
-	if (cacheGoal === cacheDone) allDone();
-});
+	// @ts-expect-error
+	window.progressUpdate(cacheDone, cacheGoal);
+	if (cacheGoal === cacheDone) return allDone();
+	tickQueue();
+};
+setCacheReadFn(cacheRead);
+function tickQueue() {
+	let entry = queue[0];
+	queue.shift();
+	entry.file(readCacheFile);
+}
 function allDone() {
 	theRes(transformStore(store));
 }
@@ -63,13 +73,13 @@ export function traverseFuckingTree(Cache: FileSystemDirectoryEntry) {
 		(Cache_Data: FileSystemDirectoryEntry) => {
 			const reader = Cache_Data.createReader();
 			reader.readEntries((entries: FileSystemEntry[]) => {
-				entries.forEach((entry, i) => {
+				entries.forEach(entry => {
 					if (!entry.isFile) return;
 					cacheGoal++;
-					// @ts-expect-error
-					entry.file(readCacheFile);
-					// File.file(readCacheFile);
+					queue.push(entry);
 				});
+
+				for (let i = 0; i < 10; i++) cacheRead();
 			});
 		}
 	);

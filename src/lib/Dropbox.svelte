@@ -22,6 +22,7 @@
 		console.log(e);
 
 		let firstItem = e.dataTransfer.items[0];
+		// console.log(firstItem);
 		let firstFile = firstItem.getAsFile();
 		if (firstFile.name === "places.sqlite") {
 			let string = await Firefox.processDB(firstFile);
