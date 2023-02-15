@@ -1,9 +1,14 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte";
 	import Dropbox from "./Dropbox.svelte";
+	import FetchCode from "./FetchCode.svelte";
 
 	let dispatcher = createEventDispatcher();
 
+	let firstDone = false;
+	let firstData = {};
+	let secondDone = false;
+	let secondData = {};
 	let stage = 0;
 
 	function next() {
@@ -12,6 +17,19 @@
 
 	function back() {
 		stage--;
+	}
+
+	function dataDropped({ detail }) {
+		firstDone = true;
+		firstData = detail;
+	}
+
+	function dataFetched({ detail }) {
+		secondDone = true;
+		secondData = detail;
+
+		// TODO
+		// dispatcher("data");
 	}
 </script>
 
@@ -42,7 +60,12 @@
 			below:
 		</p>
 		<!-- ({detail}) => dispatcher("data", detail) -->
-		<Dropbox on:data={({ detail }) => dispatcher("data", detail)} />
+		{#if firstDone}
+			<b>It worked! You can go to the next step.</b><br />
+			<button on:click={next}>Next</button>
+		{:else}
+			<Dropbox on:data={dataDropped} />
+		{/if}
 		<button on:click={back}>Back</button>
 		<!-- {:else if stage === 4}
 		<p>
@@ -60,5 +83,8 @@
 			below:
 		</p>
 		<Dropbox on:data={} /> -->
+	{:else if stage === 4}
+		<p>Click the button below to start scanning your browser cache. This may take a while.</p>
+		<FetchCode on:data={dataFetched} />
 	{/if}
 </div>

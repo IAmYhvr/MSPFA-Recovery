@@ -18,3 +18,7 @@ TL;DR:
 3. Guides you through it
 4. Informs you of what's going to be sent
 5. Sends it
+
+**Are you trying to read this code?**
+
+I'm so sorry. It's shit.
