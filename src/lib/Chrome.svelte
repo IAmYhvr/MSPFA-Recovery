@@ -1,21 +1,17 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte";
 	import Dropbox from "./Dropbox.svelte";
+	import FetchCode from "./FetchCode.svelte";
 
 	let dispatcher = createEventDispatcher();
 
 	export let isOpera: boolean;
 
+	let firstDone = false;
+	let firstData = "";
+	let secondDone = false;
+	let secondData = "";
 	let stage = 0;
-	let firstDropped = false;
-	let progressValue = 0;
-	let maxProgress = 0;
-
-	// @ts-expect-error
-	window.progressUpdate = (x, y) => {
-		progressValue = x;
-		maxProgress = y;
-	};
 
 	function next() {
 		stage++;
@@ -25,9 +21,18 @@
 		stage--;
 	}
 
-	function dropFirst() {
-		firstDropped = true;
+	function dataDropped({ detail }) {
+		firstDone = true;
+		firstData = detail;
 	}
+
+	function dataFetched({ detail }) {
+		secondDone = true;
+		secondData = detail;
+
+		dispatcher("data", firstData + secondData);
+	}
+
 </script>
 
 <div class="browser-specific">
@@ -65,15 +70,21 @@
 			Look for the file named <code>History</code> in the folder that popped
 			up. After you've found it, drag and drop it onto the blue rectangle below:
 		</p>
-		{#if firstDropped}
+		{#if firstDone}
 			Uploaded successfully!<br />
 			<button on:click={next}>Next</button>
 		{:else}
-			<Dropbox on:data={dropFirst} />
+			<Dropbox on:data={dataDropped} />
 		{/if}
 		<button on:click={back}>Back</button>
 	{:else if stage === 3}
 		<p>
+			Click the button below to start scanning your browser cache. This
+			may take a while.
+		</p>
+		<FetchCode on:data={dataFetched} />
+
+		<!-- <p>
 			Next, find the folder named <code>Cache</code> in the same folder.
 			Drag and drop that in the rectangle again:<br /><br />
 			<details>
@@ -92,6 +103,6 @@
 		</p>
 		<Dropbox on:data={({ detail }) => dispatcher("data", detail)} />
 		<progress value={progressValue} max={maxProgress} />
-		<button on:click={back}>Back</button>
+		<button on:click={back}>Back</button> -->
 	{/if}
 </div>

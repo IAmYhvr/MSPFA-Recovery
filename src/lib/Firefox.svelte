@@ -6,9 +6,9 @@
 	let dispatcher = createEventDispatcher();
 
 	let firstDone = false;
-	let firstData = {};
+	let firstData = "";
 	let secondDone = false;
-	let secondData = {};
+	let secondData = "";
 	let stage = 0;
 
 	function next() {
@@ -28,8 +28,7 @@
 		secondDone = true;
 		secondData = detail;
 
-		// TODO
-		// dispatcher("data");
+		dispatcher("data", firstData + secondData);
 	}
 </script>
 
@@ -84,7 +83,10 @@
 		</p>
 		<Dropbox on:data={} /> -->
 	{:else if stage === 4}
-		<p>Click the button below to start scanning your browser cache. This may take a while.</p>
+		<p>
+			Click the button below to start scanning your browser cache. This
+			may take a while.
+		</p>
 		<FetchCode on:data={dataFetched} />
 	{/if}
 </div>
