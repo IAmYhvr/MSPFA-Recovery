@@ -42,15 +42,22 @@
 
 		let capturedProgress = ++progressParts[part];
 		progress++;
-		let res = await fetch(`/${part ? "js" : "css"}?s=${capturedProgress}`, {
-			cache: "force-cache",
+		let erred = false;
+		let res = await fetch(
+			`https://mspfa.com/${part ? "js" : "css"}/?s=${capturedProgress}`,
+			{
+				cache: "force-cache",
+			}
+		).catch(e => {
+			erred = true;
 		});
+		if (erred || !(res instanceof Response) || !res.ok) return tickScan(part);
 		let timestamp = new Date(res.headers.get("Date")).getTime();
 		if (timestamp > MAINTENANCE_START) return tickScan(part);
 		let code = await res.text();
 		if (code === "") return tickScan(part);
 
-		saved.push({ type: part ? "js" : "css", timestamp, code });
+		saved.push({ type: part ? "js" : "css", timestamp, code, story: capturedProgress });
 		console.log("Hit!");
 
 		tickScan(part);

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Icon from "@iconify/svelte";
 	import { createEventDispatcher } from "svelte";
 	import Dropbox from "./Dropbox.svelte";
 	import FetchCode from "./FetchCode.svelte";
@@ -34,7 +35,7 @@
 </script>
 
 <div class="browser-specific">
-	<h2>Chrome (and its variants)</h2>
+	<h2>Chrome-like browsers</h2>
 	{#if stage === 0}
 		<ol>
 			<li>
@@ -52,13 +53,12 @@
 			</li>
 			<li>
 				Open your file manager up to the directory listed as <b>
-					Profile{isOpera ? "" : " Path"}
-				</b>.<br /><br />
-				On Windows, you can copy the path, press <code>Windows R</code>,
+					Profile{isOpera ? "" : " Path"}</b
+				>.<br /><br />
+				On Windows, you can copy the path, press <code><Icon icon="mdi:microsoft-windows" height={12} />-R</code>,
 				and paste it in the box that pops up.<br /><br />
 				On macOS, you can copy the path, open Finder, press
-				<code>Command-Shift-G</code>, and paste it in the box that pops
-				up.
+				<code>⌘-⇧-G</code>, and paste it in the box that pops up.
 			</li>
 			<li>
 				Look for the file named <code>History</code> in the folder that popped
