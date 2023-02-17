@@ -55,10 +55,26 @@
 				Open your file manager up to the directory listed as <b>
 					Profile{isOpera ? "" : " Path"}</b
 				>.<br /><br />
-				On Windows, you can copy the path, press <code><Icon icon="mdi:microsoft-windows" height={12} />-R</code>,
-				and paste it in the box that pops up.<br /><br />
+				On Windows, you can copy the path, press
+				<kbd
+					><Icon
+						icon="mdi:microsoft-windows"
+						height={16}
+						inline
+					/>Windows</kbd
+				>
+				+ <kbd>R</kbd>, and paste it in the box that pops up.<br /><br
+				/>
 				On macOS, you can copy the path, open Finder, press
-				<code>⌘-⇧-G</code>, and paste it in the box that pops up.
+				<kbd
+					><Icon
+						icon="material-symbols:keyboard-command-key"
+						height={16}
+						inline
+					/>Command</kbd
+				>
+				+ <kbd>Shift</kbd> + <kbd>G</kbd>, and paste it in the box that
+				pops up.
 			</li>
 			<li>
 				Look for the file named <code>History</code> in the folder that popped

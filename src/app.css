@@ -59,12 +59,17 @@ button:focus-visible {
 	outline: 4px auto -webkit-focus-ring-color;
 }
 
-.fake-btn {
+.fake-btn, kbd {
 	background: #444;
 	color: #ddd;
 	padding: 5px;
 	border: solid thin gray;
 	border-radius: 5px;
+}
+
+kbd {
+	padding: 1px 3px;
+	display: inline-block;
 }
 
 pre {
