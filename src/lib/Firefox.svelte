@@ -7,7 +7,6 @@
 
 	let firstDone = false;
 	let firstData = "";
-	let secondDone = false;
 	let secondData = "";
 	let stage = 0;
 
@@ -25,7 +24,6 @@
 	}
 
 	function dataFetched({ detail }) {
-		secondDone = true;
 		secondData = detail;
 
 		dispatcher("data", firstData + secondData);

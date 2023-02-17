@@ -6,12 +6,12 @@
 	let dispatcher = createEventDispatcher();
 
 	export let isOpera: boolean;
+	export let isLoggedIn: boolean;
 
 	let firstDone = false;
 	let firstData = "";
-	let secondDone = false;
 	let secondData = "";
-	let stage = 0;
+	let stage = isLoggedIn ? -1 : 0;
 
 	function next() {
 		stage++;
@@ -27,7 +27,6 @@
 	}
 
 	function dataFetched({ detail }) {
-		secondDone = true;
 		secondData = detail;
 
 		dispatcher("data", firstData + secondData);
@@ -104,5 +103,8 @@
 		<Dropbox on:data={({ detail }) => dispatcher("data", detail)} />
 		<progress value={progressValue} max={maxProgress} />
 		<button on:click={back}>Back</button> -->
+	{:else if stage === -1}
+			<p>TODO: Finish activity scraper? Link it here though.</p>
+			<button on:click={() => stage = 3}>Next</button>
 	{/if}
 </div>

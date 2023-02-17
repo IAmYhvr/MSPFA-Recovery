@@ -9,6 +9,7 @@
 	let browser: Browser = "unknown";
 	let isMobile = false;
 	let isOpera = false;
+	let isLoggedIn = false;
 	let results = "";
 
 	function next() {
@@ -118,14 +119,20 @@
 			{#if browser === "firefox"}
 				<Firefox on:data={resultsFound} on:fuck={back} />
 			{:else if browser === "chromium"}
-				<Chrome on:data={resultsFound} on:fuck={back} {isOpera} />
+				<Chrome
+					on:data={resultsFound}
+					on:fuck={back}
+					{isOpera}
+					{isLoggedIn}
+				/>
 			{:else if browser === "chrome"}
 				<p>
 					Are you logged into Google in your browser?
 					<br /><br />
 					<button
 						on:click={() => {
-							stage = -2;
+							isLoggedIn = true;
+							go("chromium")();
 						}}>Yes</button
 					>
 					<button on:click={go("chromium")}>No</button>
