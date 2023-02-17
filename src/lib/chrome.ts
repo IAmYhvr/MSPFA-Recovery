@@ -39,8 +39,8 @@ export async function processDB(file: File) {
 		}
 	});
 
-	return 1;
-	// return transformStore(store);
+	// return 1;
+	return transformStore(store);
 }
 
 let theRes;

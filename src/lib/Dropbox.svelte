@@ -40,10 +40,10 @@
 			firstItem.webkitGetAsEntry().isDirectory &&
 			firstFile.name === "Cache"
 		) {
-			let string = await Chrome.traverseFuckingTree(
-				firstItem.webkitGetAsEntry() as FileSystemDirectoryEntry
-			);
-			dispatcher("data", string);
+			// let string = await Chrome.traverseFuckingTree(
+			// 	firstItem.webkitGetAsEntry() as FileSystemDirectoryEntry
+			// );
+			// dispatcher("data", string);
 		}
 	}
 </script>

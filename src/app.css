@@ -98,3 +98,7 @@ pre {
 .big {
 	font-size: 25px;
 }
+
+li {
+	margin-bottom: 10px;
+}

@@ -31,52 +31,50 @@
 
 		dispatcher("data", firstData + secondData);
 	}
-
 </script>
 
 <div class="browser-specific">
 	<h2>Chrome (and its variants)</h2>
 	{#if stage === 0}
-		{#if isOpera}
-			<p>
-				Open a new tab, and go to the URL <code>chrome://about</code>.
-			</p>
-		{:else}
-			<p>
-				Open a new tab, and go to the URL <code>chrome://version</code>.
-				Once it's open, look for the text that says "<b
-					>Profile{isOpera ? "" : " Path"}:</b
-				>" It should look like this:
-			</p>
-			<img src="chrome-step2.png" width="500" alt="" />
-		{/if}
-		<button on:click={next}>Done</button>
-		<button on:click={() => dispatcher("fuck")}>Back</button>
-	{:else if stage === 1}
-		<p>
-			Open your file manager up to the directory listed as <b>
-				Profile Path
-			</b>.<br /><br />
-			On Windows, you can copy the path, press <code>Windows R</code>, and
-			paste it in the box that pops up.<br /><br />
-			On macOS, you can copy the path, open Finder, press
-			<code>Command-Shift-G</code>, and paste it in the box that pops up.
-		</p>
-		<button on:click={next}>Done</button>
-		<button on:click={back}>Back</button>
-	{:else if stage === 2}
-		<p>
-			Look for the file named <code>History</code> in the folder that popped
-			up. After you've found it, drag and drop it onto the blue rectangle below:
-		</p>
+		<ol>
+			<li>
+				{#if isOpera}
+					Open a new tab, and go to the URL
+					<code>chrome://about</code>. Once it's open, look for the
+					text that says "<b>Profile:</b>".
+				{:else}
+					Open a new tab, and go to the URL
+					<code>chrome://version</code>. Once it's open, look for the
+					text that says "<b>Profile Path:</b>" It should look like
+					this:
+					<img src="chrome-step2.png" width="460" alt="" />
+				{/if}
+			</li>
+			<li>
+				Open your file manager up to the directory listed as <b>
+					Profile{isOpera ? "" : " Path"}
+				</b>.<br /><br />
+				On Windows, you can copy the path, press <code>Windows R</code>,
+				and paste it in the box that pops up.<br /><br />
+				On macOS, you can copy the path, open Finder, press
+				<code>Command-Shift-G</code>, and paste it in the box that pops
+				up.
+			</li>
+			<li>
+				Look for the file named <code>History</code> in the folder that popped
+				up. After you've found it, drag and drop it onto the blue rectangle
+				below:
+			</li>
+		</ol>
 		{#if firstDone}
-			Uploaded successfully!<br />
+			<b>It worked! You can go to the next step.</b><br />
 			<button on:click={next}>Next</button>
 		{:else}
 			<Dropbox on:data={dataDropped} />
 		{/if}
-		<button on:click={back}>Back</button>
-	{:else if stage === 3}
+
+		<button on:click={() => dispatcher("fuck")}>Back</button>
+	{:else if stage === 1}
 		<p>
 			Click the button below to start scanning your browser cache. This
 			may take a while.
@@ -104,7 +102,7 @@
 		<progress value={progressValue} max={maxProgress} />
 		<button on:click={back}>Back</button> -->
 	{:else if stage === -1}
-			<p>TODO: Finish activity scraper? Link it here though.</p>
-			<button on:click={() => stage = 3}>Next</button>
+		<p>TODO: Finish activity scraper? Link it here though.</p>
+		<button on:click={() => (stage = 1)}>Next</button>
 	{/if}
 </div>

@@ -57,7 +57,7 @@
 	}
 
 	function transformSaved(): string {
-		let out = "--- Cached Code\n";
+		let out = "Cached Code\n";
 
 		saved.forEach(entry => {
 			out += JSON.stringify(entry) + "\n";

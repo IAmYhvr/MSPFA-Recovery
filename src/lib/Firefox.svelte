@@ -33,37 +33,36 @@
 <div class="browser-specific">
 	<h2>Firefox</h2>
 	{#if stage === 0}
-		<p>Open a new tab, and go to the URL <code>about:profiles</code>.</p>
-		<button on:click={next}>Done</button>
-		<button on:click={() => dispatcher("fuck")}>Back</button>
-	{:else if stage === 1}
-		<p>
-			Look for the profile that says "<b
-				>This is the profile in use and it cannot be deleted.</b
-			>" It should look like this:
-		</p>
-		<img src="firefox-step2.png" width="500" alt="" />
-		<button on:click={next}>Found it</button>
-		<button on:click={back}>Back</button>
-	{:else if stage === 2}
-		Click the <span class="fake-btn">Open Directory</span> button next to
-		<b>Root Directory</b>.<br /><br />
-		<button on:click={next}>Done</button>
-		<button on:click={back}>Back</button>
-	{:else if stage === 3}
-		<p>
-			Look for the file named <code>places.sqlite</code> in the folder that
-			popped up. After you've found it, drag and drop it onto the blue rectangle
-			below:
-		</p>
+		<ol>
+			<li>
+				Open a new tab, and go to the URL <code>about:profiles</code>.
+			</li>
+			<li>
+				Look for the profile that says "<b>
+					This is the profile in use and it cannot be deleted.
+				</b>" It should look like this:<br />
+				<img src="firefox-step2.png" width="460" alt="" />
+			</li>
+			<li>
+				Click the <span class="fake-btn">Open Directory</span> button
+				next to
+				<b>Root Directory</b>.<br /><br />
+			</li>
+			<li>
+				Look for the file named <code>places.sqlite</code> in the folder
+				that popped up. After you've found it, drag and drop it onto the
+				blue rectangle below:
+			</li>
+		</ol>
 		<!-- ({detail}) => dispatcher("data", detail) -->
 		{#if firstDone}
 			<b>It worked! You can go to the next step.</b><br />
 			<button on:click={next}>Next</button>
 		{:else}
 			<Dropbox on:data={dataDropped} />
+			<br />
 		{/if}
-		<button on:click={back}>Back</button>
+		<button on:click={() => dispatcher("fuck")}>Back</button>
 		<!-- {:else if stage === 4}
 		<p>
 			Go back to the <code>about:profiles</code> tab you opened earlier,
@@ -80,7 +79,7 @@
 			below:
 		</p>
 		<Dropbox on:data={} /> -->
-	{:else if stage === 4}
+	{:else if stage === 1}
 		<p>
 			Click the button below to start scanning your browser cache. This
 			may take a while.
