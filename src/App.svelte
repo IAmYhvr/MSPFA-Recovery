@@ -22,7 +22,11 @@
 		stage--;
 	}
 
-	function go(str: Browser, fuckOpera = false, bonusName = "Generic Histless") {
+	function go(
+		str: Browser,
+		fuckOpera = false,
+		bonusName = "Generic Histless"
+	) {
 		return () => {
 			stage = 2;
 			browser = str;
@@ -68,7 +72,9 @@
 				Which platform are you on?
 			</p>
 			<button class="big" on:click={goplat()}>Computer</button>
-			<button class="big" on:click={go("cache", false, "Mobile")}>Phone/Tablet</button>
+			<button class="big" on:click={go("cache", false, "Mobile")}
+				>Phone/Tablet</button
+			>
 		{:else if stage === 1}
 			<h2>Browsers</h2>
 			<p>Please select the browser that you're recovering data from.</p>
@@ -123,12 +129,7 @@
 					<button on:click={go("chromium")}>No</button>
 				</p>
 			{:else if browser === "cache"}
-				<CacheOnly
-					on:data={resultsFound}
-					on:fuck={back}
-					name={extra}
-				/>
-
+				<CacheOnly on:data={resultsFound} on:fuck={back} name={extra} />
 			{/if}
 		{:else if stage === 3}
 			<h2>Almost done...</h2>
@@ -149,7 +150,9 @@
 			<p>
 				Thank you so much for helping. Your submitted data has been
 				stored and will be analyzed at a later time.<br />
-				You're now good to close this tab.
+				If you've used MSPFA on any other browsers, feel free to come back
+				and use this tool on them.<br />
+				It's now safe to close this tab.
 			</p>
 		{:else if stage === -1}
 			<h2>Whoops.</h2>
