@@ -1,12 +1,14 @@
 <script lang="ts">
 	import BrowserCard from "./lib/BrowserCard.svelte";
+	import CacheOnly from "./lib/CacheOnly.svelte";
 	import Chrome from "./lib/Chrome.svelte";
 	import Firefox from "./lib/Firefox.svelte";
 
-	type Browser = "chrome" | "chromium" | "firefox" | "safari" | "unknown";
+	type Browser = "chrome" | "chromium" | "firefox" | "cache" | "unknown";
 
 	let stage = 0;
 	let browser: Browser = "unknown";
+	let extra = "";
 	let isMobile = false;
 	let isOpera = false;
 	let isLoggedIn = false;
@@ -20,11 +22,12 @@
 		stage--;
 	}
 
-	function go(str: Browser, fuckOpera = false) {
+	function go(str: Browser, fuckOpera = false, bonusName = "Generic Histless") {
 		return () => {
 			stage = 2;
 			browser = str;
 			isOpera = fuckOpera;
+			extra = bonusName;
 		};
 	}
 
@@ -55,18 +58,7 @@
 
 <main>
 	<div>
-		{#if isMobile}
-			<p>
-				Unfortunately, this tool doesn't work on mobile.<br />
-				If you use MSPFA on PC, feel free to use it there!
-			</p>
-			<button
-				on:click={() => {
-					isMobile = false;
-					back();
-				}}>Back</button
-			>
-		{:else if stage === 0}
+		{#if stage === 0}
 			<h1>MSPFA Recovery Tool</h1>
 			<p>
 				This tool retrieves lost data from your browser that we can use
@@ -76,14 +68,7 @@
 				Which platform are you on?
 			</p>
 			<button class="big" on:click={goplat()}>Computer</button>
-			<button class="big" on:click={goplat(true)}>Phone/Tablet</button>
-			<!-- <button on:click={next}>Computer</button>
-			<button
-				on:click={() => {
-					isMobile = true;
-					next();
-				}}>Mobile</button
-			> -->
+			<button class="big" on:click={go("cache", false, "Mobile")}>Phone/Tablet</button>
 		{:else if stage === 1}
 			<h2>Browsers</h2>
 			<p>Please select the browser that you're recovering data from.</p>
@@ -98,7 +83,7 @@
 				/>
 				<BrowserCard
 					browsers={["logos:safari"]}
-					on:select={go("safari")}
+					on:select={go("cache", false, "Safari")}
 				/>
 				<BrowserCard
 					browsers={["logos:opera"]}
@@ -137,20 +122,13 @@
 					>
 					<button on:click={go("chromium")}>No</button>
 				</p>
-			{:else if browser === "safari"}
-				<p>
-					Unfortunately we couldn't find the time to support Safari.
-					Sorry about that.<br />
-					If you are a Safari user and think your browsing history and
-					cache might have a lot of useful MSPFA data in it, let us know
-					in the #mspfa-recovery channel in
-					<a
-						href="https://discord.gg/K8yT2Ft4UU"
-						target="_blank"
-						rel="noreferrer">our Discord server</a
-					>.
-				</p>
-				<button on:click={back}>Back</button>
+			{:else if browser === "cache"}
+				<CacheOnly
+					on:data={resultsFound}
+					on:fuck={back}
+					name={extra}
+				/>
+
 			{/if}
 		{:else if stage === 3}
 			<h2>Almost done...</h2>

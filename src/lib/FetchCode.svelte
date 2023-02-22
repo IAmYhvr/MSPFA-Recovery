@@ -3,14 +3,16 @@
 
 	// I give up on modularity. I'm doing everything in the <script>
 	const MAINTENANCE_START = 1675433420000;
-	const SCAN_START = 1;
+	const SCANS = ["css", "js", "html"];
+	const DESIRED_PROPS = "og:title og:image og:description".split(" ");
+	const parser = new DOMParser();
 	let SCAN_END = 50052;
-	let SCAN_TOTAL = SCAN_END * 2;
+	let SCAN_TOTAL = SCAN_END * 3;
 	let scanStarted = false;
 	let scanComplete = false;
 	let adventures: number[] = [];
 
-	let progressParts = [0, 0];
+	let progressParts = [0, 0, 0];
 	let progress = 0;
 
 	const saved = [];
@@ -24,15 +26,16 @@
 		adventures = await advRes.json();
 
 		SCAN_END = adventures.length;
-		SCAN_TOTAL = SCAN_END * 2;
+		SCAN_TOTAL = SCAN_END * 3;
 
-		for (let i = 0; i < 10; i++) tickScan();
-		for (let i = 0; i < 10; i++) tickScan(1);
+		for (let i = 0; i < 7; i++) tickScan();
+		for (let i = 0; i < 7; i++) tickScan(1);
+		for (let i = 0; i < 7; i++) tickScan(2);
 	}
 
 	// 0. CSS
 	// 1. JS
-	async function tickScan(part: 0 | 1 = 0) {
+	async function tickScan(part: 0 | 1 | 2 = 0) {
 		if (progress >= SCAN_TOTAL) {
 			if (scanComplete) return;
 			scanComplete = true;
@@ -43,22 +46,28 @@
 		let capturedProgress = ++progressParts[part];
 		progress++;
 		let erred = false;
-		let res = await fetch(
-			`https://mspfa.com/${part ? "js" : "css"}/?s=${capturedProgress}`,
-			{
-				cache: "force-cache",
-			}
-		).catch(e => {
+		let URL = `https://mspfa.com/${
+			part ? "js" : "css"
+		}/?s=${capturedProgress}`;
+		if (part === 2) URL = `https://mspfa.com/?s=${capturedProgress}&p=1`;
+		let res = await fetch(URL, {
+			cache: "force-cache",
+		}).catch(e => {
 			erred = true;
 		});
-		if (erred || !(res instanceof Response) || !res.ok) return tickScan(part);
-		let timestamp = new Date(res.headers.get("Date")).getTime();
-		if (timestamp > MAINTENANCE_START) return tickScan(part);
+		if (erred || !(res instanceof Response) || !res.ok)
+			return tickScan(part);
+		let timestamp = new Date(res.headers.get("date")).getTime();
+		if (timestamp < MAINTENANCE_START) return tickScan(part);
 		let code = await res.text();
 		if (code === "") return tickScan(part);
 
-		saved.push({ type: part ? "js" : "css", timestamp, code, story: capturedProgress });
-		console.log("Hit!");
+		saved.push({
+			type: SCANS[part],
+			timestamp,
+			code,
+			story: capturedProgress,
+		});
 
 		tickScan(part);
 	}
@@ -67,35 +76,62 @@
 		let out = "Cached Code\n";
 
 		saved.forEach(entry => {
+			if (entry.type === "html") return;
 			out += JSON.stringify(entry) + "\n";
 		});
+
+		out += "Cached Pages\n";
+		saved
+			.filter(({ type }) => type === "html")
+			.forEach(entry => {
+				let toAdd: any = {
+					timestamp: entry.timestamp,
+					story: entry.story,
+				};
+
+				let doc = parser.parseFromString(entry.code, "text/html");
+
+				const tags = doc.querySelectorAll("meta");
+
+				tags.forEach((el: any) => {
+					const attr = el.getAttribute("property");
+
+					if (DESIRED_PROPS.includes(attr))
+						toAdd[el.getAttribute("property").substring(3)] =
+							el.getAttribute("content");
+
+					if (el.getAttribute("name") === "author")
+						toAdd.author = el.getAttribute("content");
+				});
+				if (Object.keys(toAdd).length !== 2)
+					out += JSON.stringify(toAdd) + "\n";
+			});
 
 		return out;
 	}
 </script>
 
-<div>
-	{#if !scanStarted}
-		<button id="scan" on:click={beginScan}>Begin Scan</button>
-	{:else if !scanComplete}
-		<div class="progress-wrapper">
-			<div
-				class="progress"
-				style={`width: ${
-					((SCAN_TOTAL - (SCAN_TOTAL - progress)) / SCAN_TOTAL) * 500
-				}px`}
-			/>
-		</div>
-	{:else}
-		<p>Scan complete!</p>
-	{/if}
-</div>
+{#if !scanStarted}
+	<button id="scan" on:click={beginScan}>Begin Scan</button>
+{:else if !scanComplete}
+	<div class="progress-wrapper">
+		<div
+			class="progress"
+			style={`width: ${
+				((SCAN_TOTAL - (SCAN_TOTAL - progress)) / SCAN_TOTAL) * 500
+			}px`}
+		/>
+	</div>
+{:else}
+	<p>Scan complete!</p>
+{/if}
 
 <style>
 	.progress-wrapper {
 		width: 500px;
 		height: 50px;
 		background: #555;
+		margin-bottom: 10px;
 	}
 
 	.progress {
