@@ -1,9 +1,12 @@
 import { getSQL } from "./sql";
 
 const MAINTENANCE_START = 1675433420000;
+const USER_QUERY_START = 1656216000000;
+const STORY_QUERY_START = 1660190400000;
 
 // const DESIRED_PROPS = "og:title og:image og:description".split(" ");
 const store = {};
+const userStore = {};
 // const cachedAdventures = {};
 // const cachedUsers = {};
 
@@ -42,30 +45,51 @@ export async function processDB(file: File) {
 		if (visitTimestamp > MAINTENANCE_START) return;
 
 		let storyId = parseInt(new URL(url.toString()).searchParams.get("s"));
+		if (!isNaN(storyId) && visitTimestamp > STORY_QUERY_START)
+			addStory(storyId, visitTimestamp, description, title, thumbnail);
 
-		if (isNaN(storyId)) return;
-
-		store[storyId] ??= { timestamp: visitTimestamp };
-		if (visitTimestamp >= store[storyId].timestamp) {
-			if (
-				description !== null &&
-				description !== "Hello, welcome to the bath house"
-			)
-				store[storyId].description = description;
-			if (
-				title !== null &&
-				title !== "MS Paint Fan Adventures"
-			)
-				store[storyId].title = title;
-			if (
-				thumbnail !== null &&
-				thumbnail !== "https://mspfa.com/images/ico.png"
-			)
-				store[storyId].thumbnail = thumbnail;
-		}
+		let userId = parseInt(new URL(url.toString()).searchParams.get("u"));
+		if (!isNaN(userId) && visitTimestamp > USER_QUERY_START)
+			addUser(userId, visitTimestamp, description, title, thumbnail);
 	});
 
 	return transformStore(store);
+}
+
+function addUser(userId, visitTimestamp, description, title, thumbnail) {
+	userStore[userId] ??= { timestamp: visitTimestamp };
+	if (visitTimestamp >= userStore[userId].timestamp) {
+		if (
+			description !== null &&
+			description !== "N/A"
+		)
+			userStore[userId].description = description;
+		if (title !== null && title !== "MS Paint Fan Adventures")
+			userStore[userId].title = title;
+		if (
+			thumbnail !== null &&
+			thumbnail !== "https://mspfa.com/images/wat.njs"
+		)
+			userStore[userId].thumbnail = thumbnail;
+	}
+}
+
+function addStory(storyId, visitTimestamp, description, title, thumbnail) {
+	store[storyId] ??= { timestamp: visitTimestamp };
+	if (visitTimestamp >= store[storyId].timestamp) {
+		if (
+			description !== null &&
+			description !== "Hello, welcome to the bath house"
+		)
+			store[storyId].description = description;
+		if (title !== null && title !== "MS Paint Fan Adventures")
+			store[storyId].title = title;
+		if (
+			thumbnail !== null &&
+			thumbnail !== "https://mspfa.com/images/ico.png"
+		)
+			store[storyId].thumbnail = thumbnail;
+	}
 }
 
 // const parser = new DOMParser();
@@ -86,6 +110,10 @@ function transformStore(store) {
 	let out = "Firefox\n";
 	for (const id in store) {
 		out += `Adventure #${id}: ${JSON.stringify(store[id])}\n`;
+	}
+
+	for (const id in userStore) {
+		out += `User #${id}: ${JSON.stringify(userStore[id])}\n`;
 	}
 
 	return out;
