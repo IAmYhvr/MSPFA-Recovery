@@ -6,7 +6,10 @@ import { getSQL } from "./sql";
 // } from "./readCacheFile";
 
 const store = {};
+const userStore = {};
 const MAINTENANCE_START = 1675433420000;
+const USER_QUERY_START = 1656216000000;
+const STORY_QUERY_START = 1660190400000;
 
 export async function processDB(file: File) {
 	const SQL = await getSQL();
@@ -29,22 +32,35 @@ export async function processDB(file: File) {
 		if (visitTimestamp > MAINTENANCE_START) return;
 
 		let storyId = parseInt(new URL(url.toString()).searchParams.get("s"));
+		if (!isNaN(storyId) && visitTimestamp > STORY_QUERY_START)
+			addStory(storyId, visitTimestamp, title);
 
-		if (isNaN(storyId)) return;
-
-		store[storyId] ??= { timestamp: visitTimestamp };
-		if (visitTimestamp >= store[storyId].timestamp) {
-			if (title !== null && title !== "MS Paint Fan Adventures")
-				store[storyId].title = title;
-		}
+		let userId = parseInt(new URL(url.toString()).searchParams.get("u"));
+		if (!isNaN(userId) && visitTimestamp > USER_QUERY_START)
+			addUser(userId, visitTimestamp, title);
 	});
 
 	// return 1;
-	return transformStore(store);
+	return transformStore();
 }
 
+function addUser(userId, visitTimestamp, title) {
+	userStore[userId] ??= { timestamp: visitTimestamp };
+	if (visitTimestamp >= userStore[userId].timestamp) {
+		if (title !== null && title !== "MS Paint Fan Adventures")
+			userStore[userId].title = title;
+	}
+}
 
-function transformStore(store) {
+function addStory(storyId, visitTimestamp, title) {
+	store[storyId] ??= { timestamp: visitTimestamp };
+	if (visitTimestamp >= store[storyId].timestamp) {
+		if (title !== null && title !== "MS Paint Fan Adventures")
+			store[storyId].title = title;
+	}
+}
+
+function transformStore() {
 	let out = "Chrome\n";
 	// const { adventures, users, css, js } = acquireFruitsOfYourLabor();
 	// for (const id in adventures) {
@@ -53,6 +69,10 @@ function transformStore(store) {
 
 	for (const id in store) {
 		out += `Adventure #${id}: ${JSON.stringify(store[id])}\n`;
+	}
+
+	for (const id in userStore) {
+		out += `User #${id}: ${JSON.stringify(userStore[id])}\n`;
 	}
 
 	// for (const id in css) {

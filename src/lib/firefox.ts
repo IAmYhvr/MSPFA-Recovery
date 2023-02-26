@@ -53,7 +53,7 @@ export async function processDB(file: File) {
 			addUser(userId, visitTimestamp, description, title, thumbnail);
 	});
 
-	return transformStore(store);
+	return transformStore();
 }
 
 function addUser(userId, visitTimestamp, description, title, thumbnail) {
@@ -106,7 +106,7 @@ function addStory(storyId, visitTimestamp, description, title, thumbnail) {
 // 	});
 // }
 
-function transformStore(store) {
+function transformStore() {
 	let out = "Firefox\n";
 	for (const id in store) {
 		out += `Adventure #${id}: ${JSON.stringify(store[id])}\n`;
