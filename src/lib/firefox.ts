@@ -15,7 +15,7 @@ export async function processDB(file: File) {
 	const buf = await file.arrayBuffer();
 	const db = new SQL.Database(new Uint8Array(buf));
 	const query = db.exec(
-		"SELECT * FROM 'moz_places' WHERE url LIKE 'https://mspfa.com%'"
+		"SELECT * FROM 'moz_places' WHERE url LIKE 'https://mspfa.com/%'"
 	);
 
 	query[0].values.forEach(entry => {
