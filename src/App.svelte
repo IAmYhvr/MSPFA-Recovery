@@ -48,7 +48,7 @@
 	}
 
 	async function sendData() {
-		let res = await fetch("/gather", {
+		let res = await fetch("/recover/gather", {
 			body: results,
 			method: "POST",
 		});
