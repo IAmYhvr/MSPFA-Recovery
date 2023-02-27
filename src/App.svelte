@@ -22,6 +22,15 @@
 		stage--;
 	}
 
+	function maybeMobileBack() {
+		stage--;
+		// Conditionally go back 2 stages if the user is on mobile
+		// Because clicking "mobile" skips the browser selection.
+		// If this line isn't here, and you go back from mobile, it'll
+		// Send you to the computer browser selection. Yikes!
+		if (isMobile) stage--;
+	}
+
 	function go(
 		str: Browser,
 		fuckOpera = false,
@@ -39,6 +48,7 @@
 		return () => {
 			stage = 1;
 			isMobile = mobile;
+			if (isMobile) go("cache", false, "Mobile")()
 		};
 	}
 
@@ -72,7 +82,7 @@
 				Which platform are you on?
 			</p>
 			<button class="big" on:click={goplat()}>Computer</button>
-			<button class="big" on:click={go("cache", false, "Mobile")}
+			<button class="big" on:click={goplat(true)}
 				>Phone/Tablet</button
 			>
 		{:else if stage === 1}
@@ -129,7 +139,7 @@
 					<button on:click={go("chromium")}>No</button>
 				</p>
 			{:else if browser === "cache"}
-				<CacheOnly on:data={resultsFound} on:fuck={back} name={extra} />
+				<CacheOnly on:data={resultsFound} on:fuck={maybeMobileBack} name={extra} />
 			{/if}
 		{:else if stage === 3}
 			<h2>Almost done...</h2>
