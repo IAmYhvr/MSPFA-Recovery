@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte";
+	type ThisIsStupid = 0 | 1 | 2 | 3 | 4;
 
 	// I give up on modularity. I'm doing everything in the <script>
 	const MAINTENANCE_START = 1675433420000;
-	const SCANS = ["css", "js", "html"];
+	const SCANS = ["css", "js", "html", "html", "html"];
 	const DESIRED_PROPS = "og:title og:image og:description".split(" ");
 	const parser = new DOMParser();
 	let SCAN_END = 50052;
@@ -28,14 +29,16 @@
 		SCAN_END = adventures.length;
 		SCAN_TOTAL = SCAN_END * 3;
 
-		for (let i = 0; i < 7; i++) tickScan();
-		for (let i = 0; i < 7; i++) tickScan(1);
-		for (let i = 0; i < 7; i++) tickScan(2);
+		for (let i = 0; i < 5; i++) tickScan();
+		for (let i = 0; i < 5; i++) tickScan(1);
+		for (let i = 0; i < 5; i++) tickScan(2);
+		for (let i = 0; i < 5; i++) tickScan(3);
+		for (let i = 0; i < 5; i++) tickScan(4);
 	}
 
 	// 0. CSS
 	// 1. JS
-	async function tickScan(part: 0 | 1 | 2 = 0) {
+	async function tickScan(part: ThisIsStupid = 0) {
 		if (progress >= SCAN_TOTAL) {
 			if (scanComplete) return;
 			scanComplete = true;
@@ -46,13 +49,19 @@
 		let capturedProgress = ++progressParts[part];
 		progress++;
 		let erred = false;
+		// I really don't like this. I could simplify this.
 		let URL = `https://mspfa.com/${
 			part ? "js" : "css"
 		}/?s=${capturedProgress}`;
 		if (part === 2) URL = `https://mspfa.com/?s=${capturedProgress}&p=1`;
+		if (part === 3) URL = `https://mspfa.com/log/?s=${capturedProgress}&p=1`;
+		if (part === 4) URL = `https://mspfa.com/search/?s=${capturedProgress}&p=1`;
 		let res = await fetch(URL, {
 			cache: "force-cache",
-		}).catch(e => {
+			headers: {
+				"MSPFA-Recover": "1"
+			}
+		}).catch(() => {
 			erred = true;
 		});
 		if (erred || !(res instanceof Response) || !res.ok)
