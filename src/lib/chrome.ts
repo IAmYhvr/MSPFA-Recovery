@@ -16,11 +16,11 @@ export async function processDB(file: File) {
 	const buf = await file.arrayBuffer();
 	const db = new SQL.Database(new Uint8Array(buf));
 	const query = db.exec(
-		"SELECT * FROM 'urls' WHERE url LIKE 'https://mspfa.com/%'"
+		"SELECT url, title, last_visit_time FROM 'urls' WHERE url LIKE 'https://mspfa.com/%'"
 	);
 
 	query[0].values.forEach(entry => {
-		let [_, url, title, _2, _3, visitTimestamp] = entry;
+		let [url, title, visitTimestamp] = entry;
 
 		// STFU Typescript
 		visitTimestamp = parseInt(visitTimestamp.toString());

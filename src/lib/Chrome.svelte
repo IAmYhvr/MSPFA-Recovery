@@ -8,11 +8,13 @@
 
 	export let isOpera: boolean;
 	export let isLoggedIn: boolean;
+	export let platform: string;
 
 	let firstDone = false;
 	let firstData = "";
 	let secondData = "";
-	let stage = isLoggedIn ? -1 : 0;
+	// let stage = isLoggedIn ? -1 : 0;
+	let stage = isLoggedIn ? 1 : 0;
 
 	function next() {
 		stage++;
@@ -25,12 +27,19 @@
 	function dataDropped({ detail }) {
 		firstDone = true;
 		firstData = detail;
+
+		next();
 	}
 
 	function dataFetched({ detail }) {
 		secondData = detail;
 
 		dispatcher("data", firstData + secondData);
+	}
+
+	function fuck() {
+		if (isLoggedIn) dispatcher("fuck");
+		else back();
 	}
 </script>
 
@@ -52,29 +61,36 @@
 				{/if}
 			</li>
 			<li>
-				Open your file manager up to the directory listed as <b>
+				Copy the value listed as <b>
 					Profile{isOpera ? "" : " Path"}</b
 				>.<br /><br />
-				On Windows, you can copy the path, press
-				<kbd
-					><Icon
-						icon="mdi:microsoft-windows"
-						height={16}
-						inline
-					/>Windows</kbd
-				>
-				+ <kbd>R</kbd>, and paste it in the box that pops up.<br /><br
-				/>
-				On macOS, you can copy the path, open Finder, press
-				<kbd
-					><Icon
-						icon="material-symbols:keyboard-command-key"
-						height={16}
-						inline
-					/>Command</kbd
-				>
-				+ <kbd>Shift</kbd> + <kbd>G</kbd>, and paste it in the box that
-				pops up.
+				{#if platform === "windows"}
+					Press
+					<kbd
+						><Icon
+							icon="mdi:microsoft-windows"
+							height={16}
+							inline
+						/>Windows</kbd
+					>
+					+ <kbd>R</kbd>, and paste it in the box that pops up.<br />
+				{:else if platform === "mac"}
+					Open Finder, press
+					<kbd
+						><Icon
+							icon="material-symbols:keyboard-command-key"
+							height={16}
+							inline
+						/>Command</kbd
+					>
+					+ <kbd>Shift</kbd> + <kbd>G</kbd>, and paste it in the box that
+					pops up.<br />
+				{:else}
+					If you need help accessing the folder, open a new terminal window,
+					and type in <code>xdg-open</code>, followed by a space, and then
+					use <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd> to paste the
+					path in, and then finally press enter.
+				{/if}
 			</li>
 			<li>
 				Look for the file named <code>History</code> in the folder that popped
@@ -95,7 +111,7 @@
 			Click the button below to start scanning your browser cache. This
 			may take a while.
 		</p>
-		<FetchCode on:data={dataFetched} />
+		<FetchCode on:data={dataFetched} on:back={fuck} />
 
 		<!-- <p>
 			Next, find the folder named <code>Cache</code> in the same folder.
@@ -117,8 +133,8 @@
 		<Dropbox on:data={({ detail }) => dispatcher("data", detail)} />
 		<progress value={progressValue} max={maxProgress} />
 		<button on:click={back}>Back</button> -->
-	{:else if stage === -1}
+	<!-- {:else if stage === -1}
 		<p>TODO: Finish activity scraper? Link it here though.</p>
-		<button on:click={() => (stage = 1)}>Next</button>
+		<button on:click={() => (stage = 1)}>Next</button> -->
 	{/if}
 </div>

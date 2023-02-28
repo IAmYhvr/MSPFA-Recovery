@@ -8,12 +8,12 @@
 	const DESIRED_PROPS = "og:title og:image og:description".split(" ");
 	const parser = new DOMParser();
 	let SCAN_END = 50052;
-	let SCAN_TOTAL = SCAN_END * 3;
+	let SCAN_TOTAL = SCAN_END * 5;
 	let scanStarted = false;
 	let scanComplete = false;
 	let adventures: number[] = [];
 
-	let progressParts = [0, 0, 0];
+	let progressParts = [0, 0, 0, 0, 0];
 	let progress = 0;
 
 	const saved = [];
@@ -27,7 +27,7 @@
 		adventures = await advRes.json();
 
 		SCAN_END = adventures.length;
-		SCAN_TOTAL = SCAN_END * 3;
+		SCAN_TOTAL = SCAN_END * 5;
 
 		for (let i = 0; i < 5; i++) tickScan();
 		for (let i = 0; i < 5; i++) tickScan(1);
@@ -54,8 +54,8 @@
 			part ? "js" : "css"
 		}/?s=${capturedProgress}`;
 		if (part === 2) URL = `https://mspfa.com/?s=${capturedProgress}&p=1`;
-		if (part === 3) URL = `https://mspfa.com/log/?s=${capturedProgress}&p=1`;
-		if (part === 4) URL = `https://mspfa.com/search/?s=${capturedProgress}&p=1`;
+		if (part === 3) URL = `https://mspfa.com/log/?s=${capturedProgress}`;
+		if (part === 4) URL = `https://mspfa.com/search/?s=${capturedProgress}`;
 		let res = await fetch(URL, {
 			cache: "force-cache",
 			headers: {
@@ -118,10 +118,15 @@
 
 		return out;
 	}
+
+	function fuck() {
+		dispatcher("back");
+	}
 </script>
 
 {#if !scanStarted}
 	<button id="scan" on:click={beginScan}>Begin Scan</button>
+	<button on:click={fuck}>Back</button>
 {:else if !scanComplete}
 	<div class="progress-wrapper">
 		<div
@@ -129,7 +134,9 @@
 			style={`width: ${
 				((SCAN_TOTAL - (SCAN_TOTAL - progress)) / SCAN_TOTAL) * 500
 			}px`}
-		/>
+		>
+			{((progress / SCAN_TOTAL) * 100).toFixed(2)}%
+		</div>
 	</div>
 {:else}
 	<p>Scan complete!</p>
@@ -145,20 +152,23 @@
 
 	.progress {
 		height: 50px;
+		line-height: 50px;
 		animation: infinite 3s fancy;
+		color: white;
+		text-align: center;
 	}
 
 	@keyframes fancy {
 		0% {
-			background: #595;
+			background: #373;
 		}
 
 		50% {
-			background: #7b7;
+			background: #595;
 		}
 
 		100% {
-			background: #595;
+			background: #373;
 		}
 	}
 </style>

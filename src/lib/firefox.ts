@@ -15,27 +15,16 @@ export async function processDB(file: File) {
 	const buf = await file.arrayBuffer();
 	const db = new SQL.Database(new Uint8Array(buf));
 	const query = db.exec(
-		"SELECT * FROM 'moz_places' WHERE url LIKE 'https://mspfa.com/%'"
+		"SELECT url, title, last_visit_date, description, preview_image_url FROM 'moz_places' WHERE url LIKE 'https://mspfa.com/%'"
 	);
 
 	query[0].values.forEach(entry => {
 		let [
-			_,
 			url,
 			title,
-			_2,
-			_3,
-			_4,
-			_5,
-			_6,
 			visitTimestamp,
-			_7,
-			_8,
-			_9,
 			description,
-			thumbnail,
-			_10,
-			_11,
+			thumbnail
 		] = entry;
 
 		// STFU Typescript

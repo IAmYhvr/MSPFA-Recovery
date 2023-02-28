@@ -72,6 +72,12 @@ kbd {
 	display: inline-block;
 }
 
+code {
+	padding: 3px;
+	border-radius: 3px;
+	background: #333;
+}
+
 pre {
 	max-height: 500px;
 	max-width: 1500px;
@@ -106,4 +112,25 @@ pre {
 
 li {
 	margin-bottom: 10px;
+}
+
+#bookmarklet {
+	/* width: px;
+	height: 100px; */
+	background: #448;
+	border: solid medium #224;
+	color: white;
+	text-decoration: none;
+	display: inline-block;
+	padding: 5px 10px;
+	/* margin: 10px; */
+	border-radius: 10px;
+}
+
+kbd > svg {
+	vertical-align: text-bottom !important;
+}
+
+.center {
+	text-align: center;
 }

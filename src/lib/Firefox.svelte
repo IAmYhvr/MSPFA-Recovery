@@ -21,6 +21,8 @@
 	function dataDropped({ detail }) {
 		firstDone = true;
 		firstData = detail;
+
+		next();
 	}
 
 	function dataFetched({ detail }) {
@@ -41,7 +43,7 @@
 				Look for the profile that says "<b>
 					This is the profile in use and it cannot be deleted.
 				</b>" It should look like this:<br />
-				<img src="firefox-step2.png" width="460" alt="" />
+				<img src="history/firefox-{platform}.png" alt="" />
 			</li>
 			<li>
 				Click the <span class="fake-btn">Open Directory</span> button
@@ -84,6 +86,6 @@
 			Click the button below to start scanning your browser cache. This
 			may take a while.
 		</p>
-		<FetchCode on:data={dataFetched} />
+		<FetchCode on:data={dataFetched} on:back={back} />
 	{/if}
 </div>
