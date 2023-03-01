@@ -70,7 +70,7 @@
 			<Dropbox on:data={dataDropped} />
 			<br />
 		{/if}
-		<button on:click={() => dispatcher("fuck")}>Back</button>
+		<!-- <button on:click={() => dispatcher("fuck")}>Back</button> -->
 		<!-- {:else if stage === 4}
 		<p>
 			Go back to the <code>about:profiles</code> tab you opened earlier,
@@ -92,6 +92,6 @@
 			Click the button below to start scanning your browser cache. This
 			may take a while.
 		</p>
-		<FetchCode on:data={dataFetched} on:back={back} />
+		<FetchCode on:data={dataFetched} on:back={() => dispatcher("fuck")} />
 	{/if}
 </div>
