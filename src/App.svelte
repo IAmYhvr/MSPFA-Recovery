@@ -150,11 +150,11 @@
 		{:else if stage === 0}
 			<h1>MSPFA Recovery Tool</h1>
 			<p style="max-width: 700px">
-				You can help right here, right now!<br /><br />
+				You can help right here in your browser without downloading anything!<br /><br />
 				Your browser stores a surprising amount of data on the pages you visit.
-				Using this data, we can retrieve some of what was lost.
-				The data is sent anonymously, and you can see exactly what data will be
-				sent before sending it.<br /><br />
+				Using this data, we can retrieve some of what was lost.<br /><br />
+				The data is sent anonymously, and you can see the exact data that will be
+				sent before sending it. This tool is also open-source; there's a link in the bottom-right corner!<br /><br />
 				Which platform are you on?
 				<button on:click={() => stage = 3.5}>skip to 3.5</button>
 			</p>
