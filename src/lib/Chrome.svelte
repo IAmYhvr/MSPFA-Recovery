@@ -14,7 +14,7 @@
 	let firstData = "";
 	let secondData = "";
 	// let stage = isLoggedIn ? -1 : 0;
-	let stage = isLoggedIn ? 1 : 0;
+	let stage = 0;
 
 	function next() {
 		stage++;
@@ -28,24 +28,24 @@
 		firstDone = true;
 		firstData = detail;
 
-		next();
+		dispatcher("data", firstData + secondData);
 	}
-
+	
 	function dataFetched({ detail }) {
 		secondData = detail;
-
-		dispatcher("data", firstData + secondData);
+		
+		if (isLoggedIn) dispatcher("data", firstData + secondData)
+		else next();
 	}
 
 	function fuck() {
-		if (isLoggedIn) dispatcher("fuck");
-		else back();
+		dispatcher("fuck");
 	}
 </script>
 
 <div class="browser-specific">
 	<h2>Chrome-like browsers</h2>
-	{#if stage === 0}
+	{#if stage === 1}
 		<ol>
 			{#if isOpera}
 				<li>
@@ -102,8 +102,7 @@
 		</ol>
 		<Dropbox on:data={dataDropped} />
 		<br />
-		<button on:click={() => dispatcher("fuck")}>Back</button>
-	{:else if stage === 1}
+		{:else if stage === 0}
 		<p>
 			Click the button below to start scanning your browser cache. This
 			may take a while.

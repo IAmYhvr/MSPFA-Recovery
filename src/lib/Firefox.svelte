@@ -30,19 +30,19 @@
 		firstDone = true;
 		firstData = detail;
 
-		next();
+		dispatcher("data", firstData + secondData);
 	}
-
+	
 	function dataFetched({ detail }) {
 		secondData = detail;
-
-		dispatcher("data", firstData + secondData);
+		
+		next();
 	}
 </script>
 
 <div class="browser-specific">
 	<h2>Firefox</h2>
-	{#if stage === 0}
+	{#if stage === 1}
 		<ol>
 			<li>
 				Open a new tab, and go to the URL <code>about:profiles</code>.
@@ -87,7 +87,7 @@
 			below:
 		</p>
 		<Dropbox on:data={} /> -->
-	{:else if stage === 1}
+	{:else if stage === 0}
 		<p>
 			Click the button below to start scanning your browser cache. This
 			may take a while.
