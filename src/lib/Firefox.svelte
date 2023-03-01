@@ -33,7 +33,7 @@
 
 		dispatcher("data", histData + cacheData);
 	}
-	
+
 	function dataFetched({ detail }) {
 		cacheDone = true;
 		cacheData = detail;
@@ -90,7 +90,11 @@
 	{:else if stage === 0}
 		<p>
 			Click the button below to start scanning your browser cache. This
-			may take a while.
+			will take a while, so please be patient!
+			{#if platform !== 'mobile'}
+				<br /><br />
+				You are free to tab out while this loads (though it may load slower while tabbed out).
+			{/if}
 		</p>
 		{#if cacheDone}
 			<p>
