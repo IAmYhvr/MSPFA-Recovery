@@ -44,16 +44,16 @@
 </script>
 
 <div class="browser-specific">
-	<h2>Chrome-like browsers</h2>
+	<h2>{#if isOpera}Opera{:else}Chrome-like browsers{/if}</h2>
 	{#if stage === 0}
 		<ol>
 			{#if isOpera}
 				<li>
-					Open a new tab, and go to the URL <code>chrome://about</code>.
+					Open a new tab, and go to the URL <code>opera://about</code>.
 				</li>
 				<li>
-					Find the text "<b>Profile:</b>". You may need to scroll
-					down a little bit.
+					Scroll down to find the text "<b>Profile:</b>". It looks like this:<br />
+					<img class="screenshot" src="history/opera-{platform}.png" alt="" />
 				</li>
 			{:else}
 				<li>
@@ -61,7 +61,7 @@
 				</li>
 				<li>
 					Find the text "<b>Profile Path:</b>". It looks like this:<br />
-					<img class="screenshot" src="history/chrome-{platform}.png" width="460" alt="" />
+					<img class="screenshot" src="history/chrome-{platform}.png" style="margin-left: -90px;" alt="" />
 				</li>
 			{/if}
 			<li>
