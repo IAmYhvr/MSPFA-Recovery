@@ -16,6 +16,8 @@
 			<img src="chromium.png" height={size} alt="Chromium">
 		{:else if browser === "MACOS"}
 			<img src="FinderBigSur.png" height={size} alt="macOS">
+		{:else if browser === "GX"}
+			<img src="OperaGX.png" height={size} alt="Opera GX" style="margin: 0 0 0 5px">
 		{:else}
 			<Icon icon={browser} width={size} height={size} inline />
 		{/if}

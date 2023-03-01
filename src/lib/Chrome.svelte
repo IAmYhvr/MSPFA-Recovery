@@ -47,23 +47,27 @@
 	<h2>Chrome-like browsers</h2>
 	{#if stage === 0}
 		<ol>
+			{#if isOpera}
+				<li>
+					Open a new tab, and go to the URL <code>chrome://about</code>.
+				</li>
+				<li>
+					Find the text "<b>Profile:</b>". You may need to scroll
+					down a little bit.
+				</li>
+			{:else}
+				<li>
+					Open a new tab, and go to the URL <code>chrome://version</code>.
+				</li>
+				<li>
+					Find the text "<b>Profile Path:</b>". It looks like this:<br />
+					<img class="screenshot" src="history/chrome-{platform}.png" width="460" alt="" />
+				</li>
+			{/if}
 			<li>
-				{#if isOpera}
-					Open a new tab, and go to the URL
-					<code>chrome://about</code>. Once it's open, look for the
-					text that says "<b>Profile:</b>".
-				{:else}
-					Open a new tab, and go to the URL
-					<code>chrome://version</code>. Once it's open, look for the
-					text that says "<b>Profile Path:</b>" It should look like
-					this:
-					<img src="chrome-step2.png" width="460" alt="" />
-				{/if}
-			</li>
-			<li>
-				Copy the value listed as <b>
+				Copy the text next to <b>
 					Profile{isOpera ? "" : " Path"}</b
-				>.<br /><br />
+				>, outlined in red above.<br /><br />
 				{#if platform === "windows"}
 					Press
 					<kbd
@@ -73,7 +77,7 @@
 							inline
 						/>Windows</kbd
 					>
-					+ <kbd>R</kbd>, and paste it in the box that pops up.<br />
+					+ <kbd>R</kbd>, paste it into the box that appears, and press <kbd>Enter</kbd>.<br />
 				{:else if platform === "mac"}
 					Open Finder, press
 					<kbd
@@ -83,8 +87,7 @@
 							inline
 						/>Command</kbd
 					>
-					+ <kbd>Shift</kbd> + <kbd>G</kbd>, and paste it in the box that
-					pops up.<br />
+					+ <kbd>Shift</kbd> + <kbd>G</kbd>, paste it into the box that appears, and press <kbd>Enter</kbd>.<br />
 				{:else}
 					If you need help accessing the folder, open a new terminal window,
 					and type in <code>xdg-open</code>, followed by a space, and then
@@ -93,18 +96,12 @@
 				{/if}
 			</li>
 			<li>
-				Look for the file named <code>History</code> in the folder that popped
-				up. After you've found it, drag and drop it onto the blue rectangle
-				below:
+				In the folder that opened, find the file named <code>History</code>,
+				and drag and drop it onto the box below:
 			</li>
 		</ol>
-		{#if firstDone}
-			<b>It worked! You can go to the next step.</b><br />
-			<button on:click={next}>Next</button>
-		{:else}
-			<Dropbox on:data={dataDropped} />
-		{/if}
-
+		<Dropbox on:data={dataDropped} />
+		<br />
 		<button on:click={() => dispatcher("fuck")}>Back</button>
 	{:else if stage === 1}
 		<p>

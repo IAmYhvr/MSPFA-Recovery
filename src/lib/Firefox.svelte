@@ -3,6 +3,14 @@
 	import Dropbox from "./Dropbox.svelte";
 	import FetchCode from "./FetchCode.svelte";
 
+	export let platform: string;
+
+	const buttonText = {
+		windows: "Open Folder",
+		mac: "Show in Finder",
+		linux: "Open Directory"
+	}
+
 	let dispatcher = createEventDispatcher();
 
 	let firstDone = false;
@@ -40,20 +48,18 @@
 				Open a new tab, and go to the URL <code>about:profiles</code>.
 			</li>
 			<li>
-				Look for the profile that says "<b>
-					This is the profile in use and it cannot be deleted.
-				</b>" It should look like this:<br />
-				<img src="history/firefox-{platform}.png" alt="" />
+				Find the box that says "<b>This is the profile in use and it cannot be deleted.</b>" It looks like this:<br />
+				<!-- Wow! That's stupid. -->
+				<img class="screenshot" src="history/firefox-{platform}.png" alt="" style="margin-left: {platform === "mac" ? "-102px" : "-90px"}" />
 			</li>
 			<li>
-				Click the <span class="fake-btn">Open Directory</span> button
-				next to
-				<b>Root Directory</b>.<br /><br />
+				Next to <b>Root Directory</b>, click the
+				<span class="fake-btn">{buttonText[platform]}</span> button, outlined in red above.<br />
+				<br />
 			</li>
 			<li>
-				Look for the file named <code>places.sqlite</code> in the folder
-				that popped up. After you've found it, drag and drop it onto the
-				blue rectangle below:
+				In the folder that opened, find the file named <code>places.sqlite</code>,
+				and drag and drop it into the box below:
 			</li>
 		</ol>
 		<!-- ({detail}) => dispatcher("data", detail) -->

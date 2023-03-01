@@ -23,12 +23,12 @@ a:visited {
 }
 
 body {
-	margin: 0;
+	margin: 20px;
 	display: flex;
 	place-items: center;
 	justify-content: center;
 	min-width: 320px;
-	min-height: 100vh;
+	min-height: calc(100vh - 40px);
 }
 
 .browser-specific {
@@ -101,9 +101,13 @@ pre {
 
 #browsers {
 	display: grid;
-	grid-template: repeat(1, 1fr) / repeat(5, 1fr);
+	grid-template: repeat(1, 1fr) / repeat(4, 1fr);
 	gap: 10px;
 	padding: 10px;
+}
+
+#browsers.mac {
+	grid-template-columns: repeat(5, 1fr);
 }
 
 .big {
@@ -117,8 +121,8 @@ li {
 #bookmarklet {
 	/* width: px;
 	height: 100px; */
-	background: #448;
-	border: solid medium #224;
+	background: #55a;
+	border: solid medium #448;
 	color: white;
 	text-decoration: none;
 	display: inline-block;
@@ -133,4 +137,10 @@ kbd > svg {
 
 .center {
 	text-align: center;
+}
+
+.screenshot {
+	margin-top: 0.5em;
+	border-radius: 6px;
+	border: 1px solid #404040;
 }

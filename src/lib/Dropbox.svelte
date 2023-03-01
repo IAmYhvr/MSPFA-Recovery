@@ -63,5 +63,6 @@
 		width: 500px;
 		height: 250px;
 		border: #aae dashed thin;
+		border-radius: 6px;
 	}
 </style>
