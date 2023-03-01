@@ -13,9 +13,10 @@
 
 	let dispatcher = createEventDispatcher();
 
-	let firstDone = false;
-	let firstData = "";
-	let secondData = "";
+	let histDone = false;
+	let histData = "";
+	let cacheDone = false;
+	let cacheData = "";
 	let stage = 0;
 
 	function next() {
@@ -27,16 +28,15 @@
 	}
 
 	function dataDropped({ detail }) {
-		firstDone = true;
-		firstData = detail;
+		histDone = true;
+		histData = detail;
 
-		dispatcher("data", firstData + secondData);
+		dispatcher("data", histData + cacheData);
 	}
 	
 	function dataFetched({ detail }) {
-		secondData = detail;
-		
-		next();
+		cacheDone = true;
+		cacheData = detail;
 	}
 </script>
 
@@ -63,7 +63,7 @@
 			</li>
 		</ol>
 		<!-- ({detail}) => dispatcher("data", detail) -->
-		{#if firstDone}
+		{#if histDone}
 			<b>It worked! You can go to the next step.</b><br />
 			<button on:click={next}>Next</button>
 		{:else}
@@ -92,6 +92,13 @@
 			Click the button below to start scanning your browser cache. This
 			may take a while.
 		</p>
-		<FetchCode on:data={dataFetched} on:back={() => dispatcher("fuck")} />
+		{#if cacheDone}
+			<p>
+				<b>Scan complete!</b> You will be able to confirm uploading your data at a later step.
+			</p>
+			<button on:click={next}>Next</button>
+		{:else}
+			<FetchCode on:data={dataFetched} on:back={() => dispatcher("fuck")} />
+		{/if}
 	{/if}
 </div>

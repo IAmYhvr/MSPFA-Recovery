@@ -10,10 +10,10 @@
 	export let isLoggedIn: boolean;
 	export let platform: string;
 
-	let firstDone = false;
-	let firstData = "";
-	let secondData = "";
-	// let stage = isLoggedIn ? -1 : 0;
+	let histDone = false;
+	let histData = "";
+	let cacheDone = false;
+	let cacheData = "";
 	let stage = 0;
 
 	function next() {
@@ -25,17 +25,17 @@
 	}
 
 	function dataDropped({ detail }) {
-		firstDone = true;
-		firstData = detail;
+		histDone = true;
+		histData = detail;
 
-		dispatcher("data", firstData + secondData);
+		dispatcher("data", histData + cacheData);
 	}
 	
 	function dataFetched({ detail }) {
-		secondData = detail;
+		cacheDone = true;
+		cacheData = detail;
 		
-		if (isLoggedIn) dispatcher("data", firstData + secondData)
-		else next();
+		if (isLoggedIn) dispatcher("data", histData + cacheData);
 	}
 
 	function fuck() {
@@ -107,7 +107,14 @@
 			Click the button below to start scanning your browser cache. This
 			may take a while.
 		</p>
-		<FetchCode on:data={dataFetched} on:back={fuck} />
+		{#if cacheDone}
+			<p>
+				<b>Scan complete!</b> You will be able to confirm uploading your data at a later step.
+			</p>
+			<button on:click={next}>Next</button>
+		{:else}
+			<FetchCode on:data={dataFetched} on:back={fuck} />
+		{/if}
 
 		<!-- <p>
 			Next, find the folder named <code>Cache</code> in the same folder.
