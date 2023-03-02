@@ -41,6 +41,8 @@
 	// 0. CSS
 	// 1. JS
 	async function tickScan(part: ThisIsStupid = 0) {
+		let capturedProgress = ++progressParts[part];
+
 		if (progress >= SCAN_TOTAL) {
 			if (scanComplete) return;
 			scanComplete = true;
@@ -48,7 +50,6 @@
 			return;
 		}
 
-		let capturedProgress = ++progressParts[part];
 		if (capturedProgress >= SCAN_END) return;
 		let storyId = adventures[capturedProgress];
 		progress++;
