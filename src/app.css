@@ -27,19 +27,19 @@ body {
 	display: flex;
 	place-items: center;
 	justify-content: center;
-	min-width: 320px;
 	min-height: calc(100vh - 40px);
 }
 
 .browser-specific {
-	width: 500px;
+	max-width: 500px;
 }
 
-main {
-	width: fit-content;
-}
+// main {
+// 	width: fit-content;
+// }
 
 button {
+	margin: 2px 0;
 	border-radius: 8px;
 	border: 1px solid transparent;
 	padding: 0.6em 1.2em;
@@ -131,7 +131,7 @@ li {
 	border-radius: 10px;
 }
 
-kbd > svg {
+svg, .browser img {
 	vertical-align: text-bottom !important;
 }
 

@@ -260,28 +260,12 @@
 				<CacheOnly on:data={resultsFound} on:fuck={maybeMobileBack} name={extra} {platform} />
 			{/if}
 		{:else if stage === 3}
-			{#if browser === "chromium" && isLoggedIn}
-				<h2>Uploading Cache Data</h2>
-			{:else}
-				<h2>Almost done...</h2>
-			{/if}
-
-			{#if didTheyGetAnything}
-				<p>
-					Here's <i>exactly</i> what you're sending, in case you want to check
-					for yourself.
-				</p>
-				<button on:click={sendData} class="CLICKME">Send data</button>
-				<!-- <button
-					on:click={() => {
-						stage = 0;
-					}}>Back to start</button
-				> -->
-				<pre>{ formattedResults }</pre>
-			{:else}
-				We unfortunately weren't able to get any data from that.
-				<button on:click={sendData}>Proceed</button>
-			{/if}
+			<h2>Ready to upload?</h2>
+			<button on:click={sendData} class="CLICKME">Go!</button>
+			<p>
+				Here's the exact data that will be sent:
+			</p>
+			<pre>{ formattedResults }</pre>
 		{:else if stage === 3.5}
 			<div style="max-width: 500px">
 				Finally, here's a bookmark that takes you to your Google activity page and allows you to recover any lost MSPFA data your Google account might have saved.<br />
@@ -311,7 +295,7 @@
 				<h2>No data found!</h2>
 				<p>
 					Thank you so much for helping.<br />
-					We didn't find any useful data from your browser's cache{#if !(browser === "cache" || (browser === "chromium" && isLoggedIn))} or history file{/if}, but if you've used MSPFA on other devices or browsers, you can use this tool there as well!<br />
+					We didn't find any useful data from your browser's cache{#if !(browser === "cache" || (browser === "chromium" && isLoggedIn))}{' or history file'}{/if}, but if you've used MSPFA on other devices or browsers, you can use this tool there as well!<br />
 					You may now close this tab.
 				</p>
 			{/if}

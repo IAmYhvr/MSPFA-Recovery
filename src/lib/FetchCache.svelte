@@ -152,8 +152,8 @@
 		<div
 			class="progress"
 			style={`width: ${
-				((SCAN_TOTAL - (SCAN_TOTAL - progress)) / SCAN_TOTAL) * 500
-			}px`}
+				progress / SCAN_TOTAL * 100
+			}%`}
 		>
 			{((progress / SCAN_TOTAL) * 100).toFixed(2)}%
 		</div>
@@ -164,7 +164,7 @@
 
 <style>
 	.progress-wrapper {
-		width: 500px;
+		max-width: 500px;
 		height: 50px;
 		background: #555;
 		margin-bottom: 10px;
