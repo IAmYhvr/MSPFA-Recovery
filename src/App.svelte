@@ -252,7 +252,7 @@
 					<button on:click={back}>Back</button>
 				</p>
 			{:else if browser === "cache"}
-				<CacheOnly on:data={resultsFound} on:fuck={maybeMobileBack} name={extra} />
+				<CacheOnly on:data={resultsFound} on:fuck={maybeMobileBack} name={extra} {platform} />
 			{/if}
 		{:else if stage === 3}
 			{#if browser === "chromium" && isLoggedIn}
@@ -260,18 +260,25 @@
 			{:else}
 				<h2>Almost done...</h2>
 			{/if}
-			<p>
-				Here's <i>exactly</i> what you're sending, in case you want to check
-				for yourself.
-			</p>
-			<button on:click={sendData} class:CLICKME={didTheyGetAnything}>{ didTheyGetAnything ? "Send data" : "Next" }</button>
-			<!-- <button
-				on:click={() => {
-					stage = 0;
-				}}>Back to start</button
-			> -->
 
-			<pre>{ didTheyGetAnything ? results : "We weren't able to retrieve any data from that. Sorry :("}</pre>
+			{#if didTheyGetAnything}
+				<p>
+					Here's <i>exactly</i> what you're sending, in case you want to check
+					for yourself.
+				</p>
+				<button on:click={sendData} class="CLICKME">Send data</button>
+				<!-- <button
+					on:click={() => {
+						stage = 0;
+					}}>Back to start</button
+				> -->
+				<pre>{results}</pre>
+			{:else}
+				We unfortunately weren't able to get any data from that.
+				<button on:click={sendData}>Proceed</button>
+			{/if}
+
+				<pre>{ results }</pre>
 		{:else if stage === 3.5}
 			<div style="max-width: 500px">
 				Finally, here's a bookmark that takes you to your Google activity page and allows you to recover any lost MSPFA data your Google account might have saved.<br />

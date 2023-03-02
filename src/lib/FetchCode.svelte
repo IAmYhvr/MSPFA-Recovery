@@ -13,6 +13,8 @@
 	let scanComplete = false;
 	let adventures: number[] = [];
 
+	export let showTabout = true;
+
 	let progressParts = [0, 0, 0, 0, 0];
 	let progress = 0;
 
@@ -128,6 +130,12 @@
 	<button id="scan" on:click={beginScan}>Begin Scan</button>
 	<button on:click={fuck}>Back</button>
 {:else if !scanComplete}
+	{#if showTabout}
+		You are free to tab out while this loads (though it may load slower while tabbed out).
+		<br />
+		<br />
+	{/if}
+
 	<div class="progress-wrapper">
 		<div
 			class="progress"
