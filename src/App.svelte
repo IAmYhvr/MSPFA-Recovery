@@ -311,7 +311,7 @@
 				<h2>No data found!</h2>
 				<p>
 					Thank you so much for helping.<br />
-					We didn't find any data from your browser's cache{#if !(browser === "cache" || (browser === "chromium" && isLoggedIn))} or history file{/if}, but if you've used MSPFA on other devices or browsers, you can use this tool there as well!<br />
+					We didn't find any useful data from your browser's cache{#if !(browser === "cache" || (browser === "chromium" && isLoggedIn))} or history file{/if}, but if you've used MSPFA on other devices or browsers, you can use this tool there as well!<br />
 					You may now close this tab.
 				</p>
 			{/if}
