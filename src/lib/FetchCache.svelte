@@ -49,7 +49,7 @@
 		}
 
 		let capturedProgress = ++progressParts[part];
-		if (capturedProgress > SCAN_END) return;
+		if (capturedProgress >= SCAN_END) return;
 		let storyId = adventures[capturedProgress];
 		progress++;
 
