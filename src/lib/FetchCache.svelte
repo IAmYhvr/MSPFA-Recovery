@@ -42,6 +42,7 @@
 	// 1. JS
 	async function tickScan(part: ThisIsStupid = 0) {
 		let capturedProgress = ++progressParts[part];
+		progress++;
 
 		if (progress >= SCAN_TOTAL) {
 			if (scanComplete) return;
@@ -51,8 +52,8 @@
 		}
 
 		if (capturedProgress >= SCAN_END) return;
+
 		let storyId = adventures[capturedProgress];
-		progress++;
 
 		// I really don't like this. I could simplify this.
 		let urlString = `https://mspfa.com/${
