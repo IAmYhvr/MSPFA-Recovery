@@ -318,8 +318,8 @@
 		{:else if stage === -2}
 			<h2>Whoops.</h2>
 			<p>
-				Something went wrong with sending the data.<br />Please report
-				this on the Discord.
+				Something went wrong with sending the data.<br />
+				Please report this to Grant#2604 on Discord (or contact support@mspfa.com if you can't use Discord).
 			</p>
 		{/if}
 	</div>
