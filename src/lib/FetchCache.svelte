@@ -159,7 +159,7 @@
 		</div>
 	</div>
 {:else}
-	<p>Scan complete!</p>
+	<p>Cache scan complete!</p>
 {/if}
 
 <style>

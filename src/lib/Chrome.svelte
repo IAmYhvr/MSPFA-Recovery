@@ -101,7 +101,7 @@
 		{:else if stage === 0}
 		{#if cacheDone}
 			<p>
-				<b>Scan complete!</b> You will be able to confirm uploading your data at a later step.
+				<b>Cache scan complete!</b> You will be able to confirm uploading your data at a later step.
 			</p>
 			<button on:click={next}>Next</button>
 		{:else}

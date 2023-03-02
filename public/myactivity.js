@@ -117,7 +117,7 @@
 		}
 
 		if (!statusParent) {
-			throw new Error('No status parent found.');
+			throw new Error('No status element found.');
 		}
 
 		statusParent.appendChild(status);
