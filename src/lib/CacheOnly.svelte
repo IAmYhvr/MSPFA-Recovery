@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte";
-	import FetchCode from "./FetchCode.svelte";
+	import FetchCache from "./FetchCache.svelte";
 
 	let dispatcher = createEventDispatcher();
 
 	export let platform: string;
 	export let name = "Generic Histless";
 
-	function dataFetched({ detail }) {
-		dispatcher("data", "CacheOnly\n" + detail);
+	function dataFetched() {
+		dispatcher("data");
 	}
 </script>
 
@@ -18,5 +18,5 @@
 		Click the button below to start scanning your browser cache. This will
 		take a while, so please be patient!
 	</p>
-	<FetchCode on:data={dataFetched} on:back={() => dispatcher("fuck")} showTabout={platform !== "mobile"} />
+	<FetchCache on:data={dataFetched} on:back={() => dispatcher("fuck")} showTabout={platform !== "mobile"} />
 </div>

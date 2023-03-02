@@ -73,8 +73,9 @@
 		entry.parentNode.removeChild(entry);
 	};
 
-	const minDateNumber = +new Date('2022-06-26');
-	const maxDateNumber = +new Date('2023-02-04');
+	const MIN_DATE_NUMBER = +new Date('2022-06-26');
+	const MIN_STORY_DATE_NUMBER = +new Date('2022-08-11');
+	const MAX_DATE_NUMBER = +new Date('2023-02-04');
 
 	const setStatus = string => {
 		const oldStatus = document.getElementById('mspfa-status');
@@ -127,17 +128,17 @@
 	const STORY_PATHNAMES = ['/', '/log/', '/search/', '/preview/', '/readers/'];
 	const USER_PATHNAMES = ['/user/', '/achievements/', '/favs/'];
 
-	const u = {};
-	const s = {};
+	const users = {};
+	const stories = {};
 
 	const addEntryData = entry => {
 		const dateNumber = +getEntryDate(entry);
 
-		if (dateNumber > maxDateNumber) {
+		if (dateNumber > MAX_DATE_NUMBER) {
 			return;
 		}
 
-		if (dateNumber < minDateNumber) {
+		if (dateNumber < MIN_DATE_NUMBER) {
 			return 'done';
 		}
 
@@ -153,25 +154,25 @@
 			return;
 		}
 
-		const data = (
+		const target = (
 			STORY_PATHNAMES.includes(url.pathname)
-				? s
+				? stories
 				: USER_PATHNAMES.includes(url.pathname)
-					? u
+					? users
 					: undefined
 		);
 
-		if (!data) {
+		if (!target || (target === stories && dateNumber < MIN_STORY_DATE_NUMBER)) {
 			return;
 		}
 
-		const id = url.searchParams.get(data === s ? 's' : 'u');
+		const id = url.searchParams.get(target === stories ? 's' : 'u');
 
 		if (!id) {
 			return;
 		}
 
-		if (data === s) {
+		if (target === stories) {
 			const idNumber = +id;
 
 			if (!idNumber || idNumber < 1 || idNumber > 50052) {
@@ -182,32 +183,33 @@
 		}
 
 		const name = link.textContent;
-		const imageURL = getEntryImageURL(entry);
+		const image = getEntryImageURL(entry);
 
-		if (!data[id]) {
-			data[id] = {
-				names: {},
-				icons: {}
-			}
-		}
-
-		const item = data[id];
-
-		if (!item.names[name]) {
-			item.names[name] = [];
-		}
-
-		if (!item.names[name].includes(dateNumber)) {
-			item.names[name].push(dateNumber);
-		}
-
-		if (imageURL) {
-			if (!item.icons[imageURL]) {
-				item.icons[imageURL] = [];
+		for (const [key, value] of Object.entries({ name, image })) {
+			if (
+				!value
+				|| (key === 'name' && value === 'mspfa.com | 521: Web server is down')
+				|| (key === 'image' && value === 'https://mspfa.com/images/wat.njs')
+			) {
+				continue;
 			}
 
-			if (!item.icons[imageURL].includes(dateNumber)) {
-				item.icons[imageURL].push(dateNumber);
+			if (!target[id]) {
+				target[id] = {};
+			}
+
+			const item = target[id];
+
+			if (!item[key]) {
+				item[key] = {};
+			}
+
+			if (!item[key][value]) {
+				item[key][value] = [];
+			}
+
+			if (!item[key][value].includes(dateNumber)) {
+				item[key][value].push(dateNumber);
 			}
 		}
 	};
@@ -223,13 +225,10 @@
 			entryParent.style.display = 'none';
 		}
 
-		if (Object.values(s).length === 0 && Object.values(u).length === 0) {
+		if (Object.values(stories).length === 0 && Object.values(users).length === 0) {
 			setStatus('There is no MSPFA activity under this Google account!\n\nIf you have any other Google accounts that might have MSPFA activity, click your profile icon in the top-right and select another account. After switching accounts, activate the bookmark again.');
 			return;
 		}
-
-		const data = { s, u };
-		const dataString = JSON.stringify(data);
 
 		const status = setStatus('Ready to upload?\n\n');
 
@@ -247,7 +246,7 @@
 
 			fetch('https://mspfa.com/recover/gather', {
 				method: 'POST',
-				body: dataString
+				body: JSON.stringify({ stories, users })
 			}).then(() => {
 				setStatus('Done!\n\nIf you have any other Google accounts that might have MSPFA activity, click your profile icon in the top-right and select another account. After switching accounts, activate the bookmark again.\n\nIf you\'re sure you have no other Google accounts with MSPFA activity, you may now safely close this tab and return to the recovery tool.\n\nThanks for helping us! :)');
 			}).catch(() => {
@@ -258,10 +257,20 @@
 		status.appendChild(document.createTextNode('Here\'s the exact data that will be sent:'));
 		status.appendChild(document.createElement('br'));
 
+		let formattedData = '';
+
+		for (const [key, value] of Object.entries(stories)) {
+			formattedData += 'Adventure #' + key + ': ' + JSON.stringify(value) + '\n';
+		}
+
+		for (const [key, value] of Object.entries(users)) {
+			formattedData += 'User #' + key + ': ' + JSON.stringify(value) + '\n';
+		}
+
 		const textArea = document.createElement('textarea');
 		textArea.readOnly = true;
 		textArea.style = 'width:100%;height:20em;resize:none;font-family:monospace;color-scheme:dark';
-		textArea.value = JSON.stringify(data, null, '  ');
+		textArea.value = formattedData.slice(0, -1);
 
 		status.appendChild(textArea);
 	};
@@ -311,7 +320,7 @@
 
 			requestAnimationFrame(frame);
 		} catch (error) {
-			alert('An error occurred! Please report this to Grant#2604 on Discord (or contact support@mspfa.com if you can\'t use Discord):\n\n' + error);
+			alert('An error occurred! Please try again.\n\nIf the error persists after trying again, report this to Grant#2604 on Discord (or contact support@mspfa.com if you can\'t use Discord):\n\n' + error);
 		}
 	};
 

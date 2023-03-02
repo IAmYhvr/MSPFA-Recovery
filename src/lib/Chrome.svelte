@@ -2,7 +2,7 @@
 	import Icon from "@iconify/svelte";
 	import { createEventDispatcher } from "svelte";
 	import Dropbox from "./Dropbox.svelte";
-	import FetchCode from "./FetchCode.svelte";
+	import FetchCache from "./FetchCache.svelte";
 
 	let dispatcher = createEventDispatcher();
 
@@ -11,9 +11,7 @@
 	export let platform: string;
 
 	let histDone = false;
-	let histData = "";
 	let cacheDone = false;
-	let cacheData = "";
 	let stage = 0;
 
 	function next() {
@@ -24,18 +22,16 @@
 		stage--;
 	}
 
-	function dataDropped({ detail }) {
+	function dataDropped() {
 		histDone = true;
-		histData = detail;
 
-		dispatcher("data", histData + cacheData);
+		dispatcher("data");
 	}
 
-	function dataFetched({ detail }) {
+	function dataFetched() {
 		cacheDone = true;
-		cacheData = detail;
 
-		if (isLoggedIn) dispatcher("data", histData + cacheData);
+		if (isLoggedIn) dispatcher("data");
 	}
 
 	function fuck() {
@@ -103,17 +99,17 @@
 		<Dropbox on:data={dataDropped} />
 		<br />
 		{:else if stage === 0}
-		<p>
-			Click the button below to start scanning your browser cache. This
-			will take a while, so please be patient!
-		</p>
 		{#if cacheDone}
 			<p>
 				<b>Scan complete!</b> You will be able to confirm uploading your data at a later step.
 			</p>
 			<button on:click={next}>Next</button>
 		{:else}
-			<FetchCode on:data={dataFetched} on:back={fuck} />
+			<p>
+				Click the button below to start scanning your browser cache. This
+				will take a while, so please be patient!
+			</p>
+			<FetchCache on:data={dataFetched} on:back={fuck} />
 		{/if}
 
 		<!-- <p>

@@ -4,10 +4,11 @@
 	import Chrome from "./lib/Chrome.svelte";
 	import Firefox from "./lib/Firefox.svelte";
 	import Icon from '@iconify/svelte';
+    import { getData, formatData } from './lib/store';
 
 	// This is minified from https://mspfa.com/restore/myactivity.js using https://jscompress.com/.
-	const BOOKMARKLET_URL = String.raw`javascript:{const a=()=>{const a=new URL(location.href);return"myactivity.google.com"===a.hostname&&/^(?:\/u\/\d+)?\/myactivity$/.test(location.pathname)&&"mspfa.com"===a.searchParams.get("q")&&"6"===a.searchParams.get("product")},b=()=>document.querySelector("[data-loadingmessage]"),c=()=>{const a=b();return!!a&&"true"===a.getAttribute("data-active")},d=()=>{const a=b();return a?a.parentNode.parentNode.getElementsByTagName("button")[0]:void 0},e=()=>document.querySelector("img[src^=\"https://www.gstatic.com/myactivity/scene/scene_fp_empty_state\"]");let f;const g=()=>document.querySelector("c-wiz[data-date]"),h=a=>{const b=a.getAttribute("data-date"),c=a.firstChild.firstChild.lastChild.firstChild.lastChild.textContent,d=c.slice(0,c.indexOf("\u2022")).trim();return new Date(b.slice(0,4)+"-"+b.slice(4,6)+"-"+b.slice(6)+" "+d)},i=a=>a.querySelector("a[href^=\"https://www.google.com/url\"]"),j=a=>{const b=a.querySelector("img[alt=\"\"]");return b?b.src:void 0},k=a=>{for(;a.previousSibling;)a.parentNode.removeChild(a.previousSibling);a.parentNode.removeChild(a)},l=+new Date("2022-06-26"),m=+new Date("2023-02-04"),n=a=>{const c=document.getElementById("mspfa-status");c&&c.parentNode.removeChild(c);const f=document.createElement("div");f.id="mspfa-status",f.style.textAlign="center";const g=a.split("\n");for(let b=0;b<g.length;b++)f.appendChild(document.createTextNode(g[b])),b!=g.length-1&&f.appendChild(document.createElement("br"));const h=d();h&&(h.style.display="none");let i;const j=b();j&&(i=j.parentNode.parentNode.parentNode);const k=e();if(k&&(k.parentNode.parentNode.style.display="none",i=k.parentNode.parentNode.parentNode),!i)throw new Error("No status parent found.");return i.appendChild(f),f},o=["/","/log/","/search/","/preview/","/readers/"],p=["/user/","/achievements/","/favs/"],q={},r={},s=a=>{const b=+h(a);if(b>m)return;if(b<l)return"done";const c=i(a);if(!c)return;const d=new URL(new URL(c.href).searchParams.get("q"));if("mspfa.com"!==d.hostname)return;const e=o.includes(d.pathname)?r:p.includes(d.pathname)?q:void 0;if(!e)return;const f=d.searchParams.get(e===r?"s":"u");if(!f)return;if(e===r){const a=+f;if(!a||1>a||50052<a)return}else if(!/^\d{21}$/.test(f))return;const g=c.textContent,k=j(a);e[f]||(e[f]={names:{},icons:{}});const n=e[f];n.names[g]||(n.names[g]=[]),n.names[g].includes(b)||n.names[g].push(b),k&&(!n.icons[k]&&(n.icons[k]=[]),!n.icons[k].includes(b)&&n.icons[k].push(b))},t=()=>{const a=b();if(a&&(a.parentNode.parentNode.style.display="none"),f&&(f.style.display="none"),0===Object.values(r).length&&0===Object.values(q).length)return void n("There is no MSPFA activity under this Google account!\n\nIf you have any other Google accounts that might have MSPFA activity, click your profile icon in the top-right and select another account. After switching accounts, activate the bookmark again.");const c={s:r,u:q},d=JSON.stringify(c),e=n("Ready to upload?\n\n"),g=document.createElement("button");g.type="button",g.textContent="Go!",g.style="border-radius:8px;border:1px solid transparent;padding:0.6em 1.2em;font-size:1em;font-weight:500;font-family:inherit;background-color:green;color:#eee;cursor:pointer",e.appendChild(g),e.appendChild(document.createElement("br")),e.appendChild(document.createElement("br")),g.addEventListener("click",()=>{n("Uploading... Please wait!"),fetch("https://mspfa.com/recover/gather",{method:"POST",body:d}).then(()=>{n("Done!\n\nIf you have any other Google accounts that might have MSPFA activity, click your profile icon in the top-right and select another account. After switching accounts, activate the bookmark again.\n\nIf you're sure you have no other Google accounts with MSPFA activity, you may now safely close this tab and return to the recovery tool.\n\nThanks for helping us! :)")}).catch(()=>{n("An error occurred while uploading your MSPFA data. Please refresh the page and try activating the bookmark again.\n\nIf it still doesn't work, please report this issue to Grant#2604 on Discord (or contact support@mspfa.com if you can't use Discord).")})}),e.appendChild(document.createTextNode("Here's the exact data that will be sent:")),e.appendChild(document.createElement("br"));const h=document.createElement("textarea");h.readOnly=!0,h.style="width:100%;height:20em;resize:none;font-family:monospace;color-scheme:dark",h.value=JSON.stringify(c,null,"  "),e.appendChild(h)},u=()=>{try{if(!a())return void(confirm("Please activate this bookmark again after you're redirected to the Google activity page.")&&window.open("https://myactivity.google.com/myactivity?q=mspfa.com&product=6"));if(e())return void t();if(n("Please do not leave this tab.\n\n(If this stops loading for no apparent reason, refresh the page and activate the bookmark again.)"),c())return void requestAnimationFrame(u);for(;;){const a=g();if(!a)break;f=a.parentNode;const b=s(a);if(k(a),"done"===b)return void t()}d().click(),requestAnimationFrame(u)}catch(a){alert("An error occurred! Please report this to Grant#2604 on Discord (or contact support@mspfa.com if you can't use Discord):\n\n"+a)}};(()=>{document.getElementById("mspfa-status")||requestAnimationFrame(u)})()}`;
-	const FUCKED_UP_DID_THEY_GET_ANYTHING_REGEX = /^[^\n]+\nCached Code\nCached Pages$/;
+	const BOOKMARKLET_URL = String.raw`javascript:{const a=()=>{const a=new URL(location.href);return"myactivity.google.com"===a.hostname&&/^(?:\/u\/\d+)?\/myactivity$/.test(location.pathname)&&"mspfa.com"===a.searchParams.get("q")&&"6"===a.searchParams.get("product")},b=()=>document.querySelector("[data-loadingmessage]"),c=()=>{const a=b();return!!a&&"true"===a.getAttribute("data-active")},d=()=>{const a=b();return a?a.parentNode.parentNode.getElementsByTagName("button")[0]:void 0},e=()=>document.querySelector("img[src^=\"https://www.gstatic.com/myactivity/scene/scene_fp_empty_state\"]");let f;const g=()=>document.querySelector("c-wiz[data-date]"),h=a=>{const b=a.getAttribute("data-date"),c=a.firstChild.firstChild.lastChild.firstChild.lastChild.textContent,d=c.slice(0,c.indexOf("\u2022")).trim();return new Date(b.slice(0,4)+"-"+b.slice(4,6)+"-"+b.slice(6)+" "+d)},i=a=>a.querySelector("a[href^=\"https://www.google.com/url\"]"),j=a=>{const b=a.querySelector("img[alt=\"\"]");return b?b.src:void 0},k=a=>{for(;a.previousSibling;)a.parentNode.removeChild(a.previousSibling);a.parentNode.removeChild(a)},l=+new Date("2022-06-26"),m=+new Date("2022-08-11"),n=+new Date("2023-02-04"),o=a=>{const c=document.getElementById("mspfa-status");c&&c.parentNode.removeChild(c);const f=document.createElement("div");f.id="mspfa-status",f.style.textAlign="center";const g=a.split("\n");for(let b=0;b<g.length;b++)f.appendChild(document.createTextNode(g[b])),b!=g.length-1&&f.appendChild(document.createElement("br"));const h=d();h&&(h.style.display="none");let i;const j=b();j&&(i=j.parentNode.parentNode.parentNode);const k=e();if(k&&(k.parentNode.parentNode.style.display="none",i=k.parentNode.parentNode.parentNode),!i)throw new Error("No status parent found.");return i.appendChild(f),f},p=["/","/log/","/search/","/preview/","/readers/"],q=["/user/","/achievements/","/favs/"],r={},s={},t=a=>{const b=+h(a);if(b>n)return;if(b<l)return"done";const c=i(a);if(!c)return;const d=new URL(new URL(c.href).searchParams.get("q"));if("mspfa.com"!==d.hostname)return;const e=p.includes(d.pathname)?s:q.includes(d.pathname)?r:void 0;if(!e||e===s&&b<m)return;const f=d.searchParams.get(e===s?"s":"u");if(!f)return;if(e===s){const a=+f;if(!a||1>a||50052<a)return}else if(!/^\d{21}$/.test(f))return;const g=c.textContent,k=j(a);for(const[c,d]of Object.entries({name:g,image:k})){if(!d||"name"===c&&"mspfa.com | 521: Web server is down"===d||"image"===c&&"https://mspfa.com/images/wat.njs"===d)continue;e[f]||(e[f]={});const a=e[f];a[c]||(a[c]={}),a[c][d]||(a[c][d]=[]),a[c][d].includes(b)||a[c][d].push(b)}},u=()=>{const a=b();if(a&&(a.parentNode.parentNode.style.display="none"),f&&(f.style.display="none"),0===Object.values(s).length&&0===Object.values(r).length)return void o("There is no MSPFA activity under this Google account!\n\nIf you have any other Google accounts that might have MSPFA activity, click your profile icon in the top-right and select another account. After switching accounts, activate the bookmark again.");const c=o("Ready to upload?\n\n"),d=document.createElement("button");d.type="button",d.textContent="Go!",d.style="border-radius:8px;border:1px solid transparent;padding:0.6em 1.2em;font-size:1em;font-weight:500;font-family:inherit;background-color:green;color:#eee;cursor:pointer",c.appendChild(d),c.appendChild(document.createElement("br")),c.appendChild(document.createElement("br")),d.addEventListener("click",()=>{o("Uploading... Please wait!"),fetch("https://mspfa.com/recover/gather",{method:"POST",body:JSON.stringify({stories:s,users:r})}).then(()=>{o("Done!\n\nIf you have any other Google accounts that might have MSPFA activity, click your profile icon in the top-right and select another account. After switching accounts, activate the bookmark again.\n\nIf you're sure you have no other Google accounts with MSPFA activity, you may now safely close this tab and return to the recovery tool.\n\nThanks for helping us! :)")}).catch(()=>{o("An error occurred while uploading your MSPFA data. Please refresh the page and try activating the bookmark again.\n\nIf it still doesn't work, please report this issue to Grant#2604 on Discord (or contact support@mspfa.com if you can't use Discord).")})}),c.appendChild(document.createTextNode("Here's the exact data that will be sent:")),c.appendChild(document.createElement("br"));let e="";for(const[a,b]of Object.entries(s))e+="Adventure #"+a+": "+JSON.stringify(b)+"\n";for(const[a,b]of Object.entries(r))e+="User #"+a+": "+JSON.stringify(b)+"\n";const g=document.createElement("textarea");g.readOnly=!0,g.style="width:100%;height:20em;resize:none;font-family:monospace;color-scheme:dark",g.value=e.slice(0,-1),c.appendChild(g)},v=()=>{try{if(!a())return void(confirm("Please activate this bookmark again after you're redirected to the Google activity page.")&&window.open("https://myactivity.google.com/myactivity?q=mspfa.com&product=6"));if(e())return void u();if(o("Please do not leave this tab.\n\n(If this stops loading for no apparent reason, refresh the page and activate the bookmark again.)"),c())return void requestAnimationFrame(v);for(;;){const a=g();if(!a)break;f=a.parentNode;const b=t(a);if(k(a),"done"===b)return void u()}d().click(),requestAnimationFrame(v)}catch(a){alert("An error occurred! Please try again.\n\nIf the error persists after trying again, report this to Grant#2604 on Discord (or contact support@mspfa.com if you can't use Discord):\n\n"+a)}};(()=>{document.getElementById("mspfa-status")||requestAnimationFrame(v)})()}`;
+	// const FUCKED_UP_DID_THEY_GET_ANYTHING_REGEX = /^[^\n]+\nCached Code\nCached Pages$/;
 
 	type Browser = "chrome" | "chromium" | "firefox" | "cache" | "unknown";
 	type Platform = "mobile" | "windows" | "mac" | "linux" | "unknown";
@@ -20,7 +21,8 @@
 	let isOpera = false;
 	let isLoggedIn = false;
 	let didTheyGetAnything = false;
-	let results = "";
+	let results: any = {};
+	let formattedResults = "";
 
 	function help() {
 		stage = 0;
@@ -73,16 +75,19 @@
 		};
 	}
 
-	function resultsFound({ detail }) {
-		results = detail;
-		didTheyGetAnything = FUCKED_UP_DID_THEY_GET_ANYTHING_REGEX.test(detail);
-		stage = 3;
+	function resultsFound() {
+		results = getData()
+		formattedResults = formatData();
+		didTheyGetAnything = true;
+		// didTheyGetAnything = FUCKED_UP_DID_THEY_GET_ANYTHING_REGEX.test(detail);
+		if (didTheyGetAnything) stage = 3;
+		else stage = 4;
 	}
 
 	async function sendData() {
 		if (didTheyGetAnything) {
 			let res = await fetch("/recover/gather", {
-				body: results,
+				body: JSON.stringify(results),
 				method: "POST",
 			});
 			let text = await res.text();
@@ -126,8 +131,8 @@
 				<ul>
 					<li>Some recent metadata was lost (see next FAQ) due to backups not running properly during an unexpected database failure.</li>
 					<li>The sysadmin whose responsibility it was to manage backups kept procrastinating fixing the backup system, despite being frequently notified of the issue as soon as it was discovered. Eventually, he stopped responding entirely. He's no longer on our team.</li>
-					<li>The site's current owner will fix the backup system and personally ensure it's 100% working before we put the site online again.</li>
-					<li>Even if you don't trust our backups from now on, we'll add a new option to download a copy of all your adventure's data once the site's back.</li>
+					<li>The site's current owner will fix the backup system himself and personally ensure it's 100% working before putting the site online again.</li>
+					<li>Even if you don't trust our backup system, we'll add a new option to download a copy of all your adventure's data once the site's back.</li>
 				</ul>
 				<h3>What data was lost?</h3>
 				<ul>
@@ -142,7 +147,7 @@
 				</p>
 				<h3>When will the site be back?</h3>
 				<p>
-					No clue, but rest assured we're working our asses off. It'll most likely be a few weeks. Life can unfortunately be busy.
+					No clue, but rest assured we're working our asses off. It'll most likely be a number of weeks. Life can unfortunately be busy.
 				</p>
 				<button class="big CLICKME" on:click={help}>How can I help?</button>
 				<button class="big" on:click={home}>Back</button>
@@ -272,13 +277,11 @@
 						stage = 0;
 					}}>Back to start</button
 				> -->
-				<pre>{results}</pre>
+				<pre>{ formattedResults }</pre>
 			{:else}
 				We unfortunately weren't able to get any data from that.
 				<button on:click={sendData}>Proceed</button>
 			{/if}
-
-				<pre>{ results }</pre>
 		{:else if stage === 3.5}
 			<div style="max-width: 500px">
 				Finally, here's a bookmark that takes you to your Google activity page and allows you to recover any lost MSPFA data your Google account might have saved.<br />
@@ -297,12 +300,21 @@
 				<button on:click={() => stage += 0.5}>I'm done using the bookmark. Proceed!</button>
 			</div>
 		{:else if stage === 4}
-			<h2>Thank you!</h2>
-			<p>
-				Thank you so much for helping.<br />
-				If you've used MSPFA on other devices or browsers, you can use this tool there as well!<br />
-				You may now close this tab.
-			</p>
+			{#if didTheyGetAnything}
+				<h2>Thank you!</h2>
+				<p>
+					Thank you so much for helping.<br />
+					If you've used MSPFA on other devices or browsers, you can use this tool there as well!<br />
+					You may now close this tab.
+				</p>
+			{:else}
+				<h2>No data found!</h2>
+				<p>
+					Thank you so much for helping.<br />
+					We didn't find any data from your browser's cache{#if !(browser === "cache" || (browser === "chromium" && isLoggedIn))} or history file{/if}, but if you've used MSPFA on other devices or browsers, you can use this tool there as well!<br />
+					You may now close this tab.
+				</p>
+			{/if}
 		{:else if stage === -2}
 			<h2>Whoops.</h2>
 			<p>

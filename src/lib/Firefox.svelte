@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte";
 	import Dropbox from "./Dropbox.svelte";
-	import FetchCode from "./FetchCode.svelte";
+	import FetchCache from "./FetchCache.svelte";
 
 	export let platform: string;
 
@@ -14,9 +14,7 @@
 	let dispatcher = createEventDispatcher();
 
 	let histDone = false;
-	let histData = "";
 	let cacheDone = false;
-	let cacheData = "";
 	let stage = 0;
 
 	function next() {
@@ -27,16 +25,14 @@
 		stage--;
 	}
 
-	function dataDropped({ detail }) {
+	function dataDropped() {
 		histDone = true;
-		histData = detail;
 
-		dispatcher("data", histData + cacheData);
+		dispatcher("data");
 	}
 
-	function dataFetched({ detail }) {
+	function dataFetched() {
 		cacheDone = true;
-		cacheData = detail;
 	}
 </script>
 
@@ -88,17 +84,17 @@
 		</p>
 		<Dropbox on:data={} /> -->
 	{:else if stage === 0}
-		<p>
-			Click the button below to start scanning your browser cache. This
-			will take a while, so please be patient!
-		</p>
 		{#if cacheDone}
 			<p>
 				<b>Scan complete!</b> You will be able to confirm uploading your data at a later step.
 			</p>
 			<button on:click={next}>Next</button>
 		{:else}
-			<FetchCode on:data={dataFetched} on:back={() => dispatcher("fuck")} />
+			<p>
+				Click the button below to start scanning your browser cache. This
+				will take a while, so please be patient!
+			</p>
+			<FetchCache on:data={dataFetched} on:back={() => dispatcher("fuck")} />
 		{/if}
 	{/if}
 </div>
