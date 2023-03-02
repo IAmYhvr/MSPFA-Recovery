@@ -98,7 +98,7 @@
 		</ol>
 		<Dropbox on:data={dataDropped} />
 		<br />
-		{:else if stage === 0}
+	{:else if stage === 0}
 		{#if cacheDone}
 			<p>
 				<b>Cache scan complete!</b> You will be able to confirm uploading your data at a later step.
