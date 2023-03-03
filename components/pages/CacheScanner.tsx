@@ -163,7 +163,7 @@ export default function CacheScanner() {
 			return (
 				<>
 					<p>
-						Click the button below to start scanning your browser cache for MSPFA data. This may take a while, so please be patient!
+						Click the button below to start scanning MSPFA's cache in your browser. This may take a while, so please be patient!
 					</p>
 					<button className="primary" onClick={start}>
 						Start Cache Scan
