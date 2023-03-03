@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 export default function Component() {
 	useEffect(() => {
-		Router.replace('/recover');
+		Router.replace('/');
 	});
 
 	return null;
