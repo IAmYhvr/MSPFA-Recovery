@@ -246,7 +246,10 @@
 
 			fetch('https://mspfa.com/recover/api/data', {
 				method: 'POST',
-				body: JSON.stringify({ stories, users })
+				body: JSON.stringify({ stories, users }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
 			}).then(() => {
 				setStatus('Done!\n\nIf you have any other Google accounts that might have MSPFA activity, click your profile icon in the top-right and select another account. After switching accounts, activate the bookmark again.\n\nIf you\'re sure you have no other Google accounts with MSPFA activity, you may now safely close this tab and return to the recovery tool.\n\nThanks for helping us! :)');
 			}).catch(() => {
@@ -279,7 +282,10 @@
 		try {
 			if (!onCorrectLocation()) {
 				if (confirm('Please activate this bookmark again after you\'re redirected to the Google activity page.')) {
-					window.open('https://myactivity.google.com/myactivity?q=mspfa.com&product=6');
+					const link = document.createElement('a');
+					link.target = '_blank';
+					link.href = 'https://myactivity.google.com/myactivity?q=mspfa.com&product=6';
+					link.click();
 				}
 
 				return;
