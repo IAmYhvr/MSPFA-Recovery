@@ -6,6 +6,7 @@ import { DragEvent, useState } from 'react';
 import { addDataByURL } from 'lib/addData';
 import TheEnd from 'components/pages/TheEnd';
 import { useData } from 'lib/DataContext';
+import BackButtonContainer from 'components/BackButtonContainer';
 
 export type HistoryFileBoxProps = {
 	historyFilename: string
@@ -122,12 +123,17 @@ export default function HistoryFileBox({ historyFilename }: HistoryFileBoxProps)
 			Loading...
 		</div>
 	) : (
-		<div
-			className={`file-box${hovering ? ' hovering' : ''}`}
-			onDragOver={startHovering}
-			onDragEnter={startHovering}
-			onDragLeave={stopHovering}
-			onDrop={drop}
-		/>
+		<>
+			<div
+				className={`file-box${hovering ? ' hovering' : ''}`}
+				onDragOver={startHovering}
+				onDragEnter={startHovering}
+				onDragLeave={stopHovering}
+				onDrop={drop}
+			/>
+			{browser === 'chrome-with-google' && (
+				<BackButtonContainer />
+			)}
+		</>
 	);
 }
