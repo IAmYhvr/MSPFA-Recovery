@@ -76,7 +76,20 @@ const isValidBody = (body: unknown) => (
 	&& Object.entries(body.users).every(isValidUserEntry)
 );
 
+const ALLOWED_ORIGINS = new Set(['https://mspfa.com', 'https://myactivity.google.com']);
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	if (req.method === 'OPTIONS') {
+		const { origin } = req.headers;
+
+		if (origin && ALLOWED_ORIGINS.has(origin)) {
+			res.setHeader('Access-Control-Allow-Origin', origin);
+		}
+
+		res.end();
+		return;
+	}
+
 	if (req.method !== 'POST') {
 		res.status(405).end();
 		return;
@@ -92,8 +105,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		return;
 	}
 
-	const bodyString = JSON.stringify(req.body);
-
 	const date = new Date();
 	const dateString = `${date.getFullYear()}-${`0${date.getMonth() + 1}`.slice(-2)}-${`0${date.getDate()}`.slice(-2)}`;
 
@@ -101,11 +112,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	await fs.promises.mkdir(parentPath, { recursive: true });
 
 	const id = hash(String(req.headers['cf-connecting-ip']));
-	const contentHash = hash(bodyString);
-	const filename = `${id} ${contentHash}.json.br`;
+
+	const contentHash = hash(JSON.stringify(req.body));
+	const filename = `${contentHash}.json.br`;
 	const filePath = path.join(parentPath, filename);
 
-	const bodyStream = Readable.from(bodyString);
+	const bodyStream = Readable.from(
+		JSON.stringify({ id, ...req.body })
+	);
 	const brotliCompress = zlib.createBrotliCompress();
 	const writeStream = fs.createWriteStream(filePath);
 
