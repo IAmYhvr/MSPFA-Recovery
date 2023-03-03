@@ -97,7 +97,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	const date = new Date();
 	const dateString = `${date.getFullYear()}-${`0${date.getMonth() + 1}`.slice(-2)}-${`0${date.getDate()}`.slice(-2)}`;
 
-	const parentPath = path.join(process.cwd(), 'data', dateString);
+	const parentPath = path.join(process.cwd(), '..', 'data', dateString);
 	await fs.promises.mkdir(parentPath, { recursive: true });
 
 	const id = hash(String(req.headers['cf-connecting-ip']));
