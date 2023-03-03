@@ -83,8 +83,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 	if (origin && ALLOWED_ORIGINS.has(origin)) {
 		res.setHeader('Access-Control-Allow-Origin', origin);
-		res.setHeader('Access-Control-Request-Method', 'POST');
-		res.setHeader('Access-Control-Request-Headers', 'Content-Type');
+		res.setHeader('Access-Control-Allow-Methods', 'POST');
+		res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 	}
 
 	if (req.method === 'OPTIONS') {
