@@ -10,6 +10,7 @@ import { useData } from 'lib/DataContext';
 import { MAX_DATE_NUMBER, MIN_STORY_DATE_NUMBER } from 'lib/dates';
 import { usePlatform } from 'lib/PlatformContext';
 import STORY_IDS from 'lib/STORY_IDS';
+import timeout from 'lib/timeout';
 import useFunction from 'lib/useFunction';
 import useLinkTo from 'lib/useLinkTo';
 import { useRef, useState } from 'react';
@@ -83,36 +84,21 @@ export default function CacheScanner() {
 
 			tries++;
 
-			let response;
-			try {
-				response = await fetch(urlString, {
+			const [response] = await Promise.all([
+				fetch(urlString, {
 					cache: cacheModeRef.current,
 					mode: 'same-origin',
 					headers: {
 						'MSPFA-Recover': '1'
 					}
-				});
-			} catch (error) {
-				if (process.env.NODE_ENV === 'development') {
-					// TODO: Determine if this should be done whether in dev mode or not.
-					setDone(done => done + 1);
-					fetchNext(type);
-					return;
-				}
-
-				if (tries < 10) {
-					tryToFetch();
-					return;
-				}
-
-				setError(error);
-				return;
-			}
+				}).catch(() => undefined),
+				timeout()
+			]);
 
 			setDone(done => done + 1);
 			fetchNext(type);
 
-			if (!response.ok) {
+			if (!response?.ok) {
 				return;
 			}
 
@@ -177,7 +163,7 @@ export default function CacheScanner() {
 			return (
 				<>
 					<p>
-						Click the button below to start scanning your browser cache for MSPFA data. This will take a while, so please be patient!
+						Click the button below to start scanning your browser cache for MSPFA data. This may take a while, so please be patient!
 					</p>
 					<button className="primary" onClick={start}>
 						Start Cache Scan
@@ -219,7 +205,7 @@ export default function CacheScanner() {
 		return (
 			<>
 				<p>
-					Scanning your browser's cache for MSPFA data... This will take a while, so please be patient!
+					Scanning your browser's cache for MSPFA data... This may take a while, so please be patient!
 				</p>
 				{platform !== 'mobile' && (
 					<p>
