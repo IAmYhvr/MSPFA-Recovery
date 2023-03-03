@@ -20,6 +20,11 @@ export default function TheEnd() {
 				<p>
 					We didn't find any useful data from your browser's cache{platform !== 'mobile' && ' or history file'}, but if you've used MSPFA on other devices, browsers, or browser profiles, you can use this tool there as well!
 				</p>
+				{platform === 'mobile' && (
+					<p>
+						<b>You're much more likely to have useful data on desktop than on mobile/tablet!</b>
+					</p>
+				)}
 				<TheEndOfTheEnd />
 			</main>
 		);
