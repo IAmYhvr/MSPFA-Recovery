@@ -44,11 +44,19 @@
 		document.querySelector('c-wiz[data-date]')
 	);
 
-	const getEntryDate = entry => {
-		const dateString = entry.getAttribute('data-date');
+	const getEntryDateNumber = entry => {
+		const stringWithDate = entry.getAttribute('data-date');
 		const stringWithTime = entry.firstChild.firstChild.lastChild.firstChild.lastChild.textContent;
+
+		const dateString = stringWithDate.slice(0, 4) + '-' + stringWithDate.slice(4, 6) + '-' + stringWithDate.slice(6);
 		const timeString = stringWithTime.slice(0, stringWithTime.indexOf('•')).trim().replace(/\./g, ':');
-		return new Date(dateString.slice(0, 4) + '-' + dateString.slice(4, 6) + '-' + dateString.slice(6) + ' ' + timeString);
+
+		let dateNumber = +new Date(dateString + ' ' + timeString);
+		if (!dateNumber) {
+			dateNumber = +new Date(dateString);
+		}
+
+		return dateNumber;
 	};
 
 	const getEntryLink = entry => (
@@ -132,7 +140,7 @@
 	const stories = {};
 
 	const addEntryData = entry => {
-		const dateNumber = +getEntryDate(entry);
+		const dateNumber = getEntryDateNumber(entry);
 
 		if (dateNumber > MAX_DATE_NUMBER) {
 			return;
