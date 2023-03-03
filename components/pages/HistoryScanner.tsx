@@ -4,6 +4,7 @@ import { Platform, usePlatform } from 'lib/PlatformContext';
 import { Icon } from '@iconify/react';
 import HistoryFileBox from 'components/HistoryFileBox';
 import useLeaveConfirmation from 'lib/useLeaveConfirmation';
+import BackButtonContainer from 'components/BackButtonContainer';
 
 export default function HistoryScanner() {
 	useLeaveConfirmation();
@@ -109,6 +110,9 @@ export default function HistoryScanner() {
 				</li>
 			</ol>
 			<HistoryFileBox historyFilename={historyFilename} />
+			{browser === 'chrome-with-google' && (
+				<BackButtonContainer />
+			)}
 		</main>
 	);
 }
