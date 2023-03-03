@@ -1,7 +1,6 @@
 import BrowserButton from 'components/BrowserButton';
 import useLinkTo from 'lib/useLinkTo';
 import { usePlatform } from 'lib/PlatformContext';
-import PlatformPicker from 'components/pages/PlatformPicker';
 import GooglePicker from 'components/pages/GooglePicker';
 import BackButtonContainer from 'components/BackButtonContainer';
 import CacheScanner from 'components/pages/CacheScanner';
