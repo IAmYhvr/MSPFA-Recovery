@@ -119,7 +119,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 	const bodyStream = Readable.from(
 		JSON.stringify({
-			id: hash(String(req.headers['cf-connecting-ip'])),
 			date: Date.now(),
 			...req.body
 		})
