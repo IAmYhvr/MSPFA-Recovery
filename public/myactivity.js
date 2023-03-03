@@ -73,9 +73,9 @@
 		entry.parentNode.removeChild(entry);
 	};
 
-	const MIN_DATE_NUMBER = +new Date('2022-06-26');
-	const MIN_STORY_DATE_NUMBER = +new Date('2022-08-11');
-	const MAX_DATE_NUMBER = +new Date('2023-02-04');
+	const MIN_DATE_NUMBER = +new Date('2022-06-26T00:00:00Z');
+	const MIN_STORY_DATE_NUMBER = +new Date('2022-08-11T00:00:00Z');
+	const MAX_DATE_NUMBER = +new Date('2023-02-04T00:00:00Z');
 
 	const setStatus = string => {
 		const oldStatus = document.getElementById('mspfa-status');
@@ -244,7 +244,7 @@
 		submitButton.addEventListener('click', () => {
 			setStatus('Uploading... Please wait!');
 
-			fetch('https://mspfa.com/recover/gather', {
+			fetch('https://mspfa.com/recover/api/data', {
 				method: 'POST',
 				body: JSON.stringify({ stories, users })
 			}).then(() => {
