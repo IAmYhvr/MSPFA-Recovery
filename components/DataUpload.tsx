@@ -1,11 +1,14 @@
 import TheEndOfTheEnd from 'components/TheEndOfTheEnd';
 import { useData } from 'lib/DataContext';
 import useFunction from 'lib/useFunction';
+import useLeaveConfirmation from 'lib/useLeaveConfirmation';
 import { useRef, useState } from 'react';
 
 export default function DataUpload() {
 	const [status, setStatus] = useState<'confirm' | 'uploading' | 'done'>('confirm');
 	const [error, setError] = useState<unknown>();
+
+	useLeaveConfirmation(status !== 'done');
 
 	const data = useData();
 

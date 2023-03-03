@@ -12,6 +12,7 @@ import { usePlatform } from 'lib/PlatformContext';
 import STORY_IDS from 'lib/STORY_IDS';
 import timeout from 'lib/timeout';
 import useFunction from 'lib/useFunction';
+import useLeaveConfirmation from 'lib/useLeaveConfirmation';
 import useLinkTo from 'lib/useLinkTo';
 import { useRef, useState } from 'react';
 
@@ -37,6 +38,8 @@ export default function CacheScanner() {
 	const [started, setStarted] = useState(false);
 	const [error, setError] = useState<unknown>();
 	const [done, setDone] = useState(0);
+
+	useLeaveConfirmation(started);
 
 	const storyIDIndexesRef = useRef<Record<CacheScanType, number>>({
 		story: 0,

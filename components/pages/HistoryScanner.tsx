@@ -3,8 +3,11 @@ import { useBrowser } from 'lib/BrowserContext';
 import { Platform, usePlatform } from 'lib/PlatformContext';
 import { Icon } from '@iconify/react';
 import HistoryFileBox from 'components/HistoryFileBox';
+import useLeaveConfirmation from 'lib/useLeaveConfirmation';
 
 export default function HistoryScanner() {
+	useLeaveConfirmation();
+
 	const [platform] = usePlatform();
 	const [browser] = useBrowser();
 
