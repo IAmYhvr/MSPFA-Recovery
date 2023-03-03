@@ -1,11 +1,9 @@
-import { useBrowser } from 'lib/BrowserContext';
+import TheEndOfTheEnd from 'components/TheEndOfTheEnd';
 import { useData } from 'lib/DataContext';
 import useFunction from 'lib/useFunction';
 import { useRef, useState } from 'react';
 
 export default function DataUpload() {
-	const [browser] = useBrowser();
-
 	const [status, setStatus] = useState<'confirm' | 'uploading' | 'done'>('confirm');
 	const [error, setError] = useState<unknown>();
 
@@ -60,9 +58,7 @@ export default function DataUpload() {
 				<p>
 					If you've used MSPFA on other devices, browsers, or browser profiles, you can use this tool there as well!
 				</p>
-				<p>
-					You may now {browser === 'chrome-with-google' && 'delete the recovery bookmark and '}close this tab.
-				</p>
+				<TheEndOfTheEnd />
 			</main>
 		);
 	}

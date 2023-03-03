@@ -1,5 +1,5 @@
 import { useBrowser } from 'lib/BrowserContext';
-import { usePage } from 'lib/PageContex';
+import { usePage } from 'lib/PageContext';
 import initSqlJs from 'sql.js/dist/sql-asm';
 import useFunction from 'lib/useFunction';
 import { DragEvent, useState } from 'react';

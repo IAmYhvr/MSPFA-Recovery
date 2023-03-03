@@ -2,7 +2,7 @@ import Home from 'components/pages/Home';
 import BrowserContext, { Browser } from 'lib/BrowserContext';
 import Data from 'lib/Data';
 import { DataContext } from 'lib/DataContext';
-import PageContext, { PreviousPageContext } from 'lib/PageContex';
+import PageContext, { PreviousPageContext } from 'lib/PageContext';
 import PlatformContext, { Platform } from 'lib/PlatformContext';
 import { useMemo, useRef, useState } from 'react';
 
