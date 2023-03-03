@@ -20,17 +20,17 @@ export default function FAQ() {
 			<h3>What happened, and how can I be sure it won't happen again?</h3>
 			<ul>
 				<li>Some recent metadata was lost (see next FAQ) due to backups not running properly during an unexpected database failure on February 3.</li>
-				<li>The sysadmin whose responsibility it was to manage backups kept procrastinating fixing the backup system, despite being frequently notified of the issue as soon as it was discovered. Eventually, he stopped responding entirely. He's no longer on our team.</li>
+				<li>The sysadmin whose responsibility it was to manage backups continually delayed fixing the backup system, despite being frequently notified of the issue as soon as it was discovered. Eventually, he stopped responding entirely. He's no longer on our team.</li>
 				<li>The site's current owner will fix the backup system himself and personally ensure it's 100% working before putting the site online again.</li>
 				<li>Even if you don't trust our backup system, we'll add a new option to download a copy of all your adventure's data once the site's back.</li>
 			</ul>
 
 			<h3>What data was lost?</h3>
 			<ul>
-				<li>NOT page data! All page data is 100% safe and sound. Same for comments.</li>
 				<li>For a large percentage of adventures and users, we've already recovered more recent data from the below losses!</li>
 				<li>Some adventure favorites, ownerships, descriptions, icons, or tags created in the 6 months before the incident were lost (since August 11, 2022).</li>
 				<li>Some usernames, profile icons, descriptions, and messages created in the 7 months before the incident were lost (since June 26, 2022).</li>
+				<li>All pages, comments, and any data before the aforementioned dates are 100% safe and sound.</li>
 			</ul>
 
 			<h3>Will I have to prove ownership of my adventure?</h3>
