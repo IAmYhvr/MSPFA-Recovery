@@ -263,7 +263,7 @@
 					throw new Error();
 				}
 
-				setStatus('Done!\n\nIf you have any other Google accounts that might have MSPFA activity, click your profile icon in the top-right and select another account. After switching accounts, activate the bookmark again.\n\nIf you\'re sure you have no other Google accounts with MSPFA activity, you may now safely close this tab and return to the recovery page.\n\nThanks for helping us! :)');
+				setStatus('Done!\n\nIf you have any other Google accounts that might have MSPFA activity, click your profile icon in the top-right and select another account. After switching accounts, activate the bookmark again.\n\nIf you\'re sure you have no other Google accounts with MSPFA activity, you may now safely close this tab and return to the recovery page. Thanks for helping us! :)');
 			}).catch(() => {
 				setStatus('An error occurred while uploading your MSPFA data. Please refresh the page and try activating the bookmark again.\n\nIf it still doesn\'t work, please report this issue to Grant#2604 on Discord (or contact support@mspfa.com if you can\'t use Discord).');
 			});
@@ -305,7 +305,7 @@
 				return;
 			}
 
-			setStatus('This tab must be visible for the loading to continue. Please be patient.\n\n(If this stops loading for no apparent reason, refresh the page and activate the bookmark again.)');
+			setStatus('This tab must be visible, or the loading will pause. Please be patient.\n\n(If this stops loading for no apparent reason, refresh the page and activate the bookmark again.)');
 
 			if (getLoading()) {
 				requestAnimationFrame(frame);
