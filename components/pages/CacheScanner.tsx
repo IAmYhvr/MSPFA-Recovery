@@ -208,7 +208,7 @@ export default function CacheScanner() {
 		return (
 			<>
 				<p>
-					Scanning your browser's cache for MSPFA data... This may take a while, so please be patient!
+					Scanning MSPFA's cache in your browser... This may take a while, so please be patient!
 				</p>
 				{platform !== 'mobile' && (
 					<p>
