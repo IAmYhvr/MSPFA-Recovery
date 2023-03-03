@@ -95,6 +95,7 @@ export default function CacheScanner() {
 						'MSPFA-Recover': '1'
 					}
 				}).catch(() => undefined),
+				// The occasional timeout prevents the renderer from freezing.
 				Math.random() < 0.05 ? timeout() : Promise.resolve()
 			]);
 
