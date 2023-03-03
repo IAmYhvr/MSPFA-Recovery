@@ -43,8 +43,7 @@ export default function HistoryScanner() {
 
 	return (
 		<main style={{ maxWidth: '700px' }}>
-			<BrowserHeading />
-			<h3>Last step!</h3>
+			<h1>Last step!</h1>
 			<ol>
 				<li>
 					Open a new tab, and go to the URL <code>{urlToOpen}</code>.
