@@ -113,14 +113,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	const parentPath = path.join(process.cwd(), '..', 'data', dateString);
 	await fs.promises.mkdir(parentPath, { recursive: true });
 
-	const id = hash(String(req.headers['cf-connecting-ip']));
-
 	const contentHash = hash(JSON.stringify(req.body));
 	const filename = `${contentHash}.json.br`;
 	const filePath = path.join(parentPath, filename);
 
 	const bodyStream = Readable.from(
-		JSON.stringify({ id, ...req.body })
+		JSON.stringify({
+			id: hash(String(req.headers['cf-connecting-ip'])),
+			date: Date.now(),
+			...req.body
+		})
 	);
 	const brotliCompress = zlib.createBrotliCompress();
 	const writeStream = fs.createWriteStream(filePath);
