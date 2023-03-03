@@ -106,7 +106,7 @@ export default function HistoryScanner() {
 					</>
 				)}
 				<li>
-					In the folder that opened, find the file named <code>{historyFilename}</code>, and drag and drop it into the box below (don't worry, it will only be scanned locally, not uploaded):
+					In the folder that opened, find the file{!historyFilename.includes('.') && ' (not folder)'} named <code>{historyFilename}</code>, and drag and drop it into the box below (don't worry, it will only be scanned locally, not uploaded):
 				</li>
 			</ol>
 			<HistoryFileBox historyFilename={historyFilename} />
