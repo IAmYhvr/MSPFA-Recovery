@@ -25,8 +25,13 @@ export default function GoogleActivityScanner() {
 				To use it, drag and drop the below button into your bookmarks bar, then click it and follow what it says.
 			</p>
 			<div style={{ textAlign: 'center' }}>
-				<a className="bookmarklet" href={`javascript:${BOOKMARKLET_CODE}`} onClick={preventDefault}>
-					MSPFA Activity Recovery
+				<a
+					className="bookmarklet"
+					href={`javascript:${BOOKMARKLET_CODE}`}
+					onClick={preventDefault}
+					onContextMenu={preventDefault}
+				>
+					<span>Click Me</span>
 				</a>
 			</div>
 			<p>
