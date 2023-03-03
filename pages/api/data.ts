@@ -79,15 +79,22 @@ const isValidBody = (body: unknown) => (
 const ALLOWED_ORIGINS = new Set(['https://mspfa.com', 'https://myactivity.google.com']);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	if (req.method !== 'POST') {
-		res.status(405).end();
-		return;
-	}
-
 	const { origin } = req.headers;
 
 	if (origin && ALLOWED_ORIGINS.has(origin)) {
 		res.setHeader('Access-Control-Allow-Origin', origin);
+		res.setHeader('Access-Control-Request-Method', 'POST');
+		res.setHeader('Access-Control-Request-Headers', 'Content-Type');
+	}
+
+	if (req.method === 'OPTIONS') {
+		res.setHeader('Allow', 'OPTIONS, POST').end();
+		return;
+	}
+
+	if (req.method !== 'POST') {
+		res.status(405).end();
+		return;
 	}
 
 	if (req.headers['content-type'] !== 'application/json') {
