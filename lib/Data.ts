@@ -1,8 +1,6 @@
 export type DataType = 'stories' | 'users';
 
-export const ENTRY_KEYS = ['name', 'description', 'icon', 'author', 'css', 'js'] as const;
-
-export type EntryKey = typeof ENTRY_KEYS[number];
+export type EntryKey = 'name' | 'description' | 'icon' | 'author' | 'css' | 'js';
 
 export type Entry = Partial<Record<EntryKey, string | undefined | null>>;
 

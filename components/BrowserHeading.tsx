@@ -1,6 +1,7 @@
 import { Browser, useBrowser } from 'lib/BrowserContext';
 
 const texts: Record<Browser, string> = {
+	'chrome': 'Chrome (not signed in)',
 	'chrome-with-google': 'Chrome',
 	'chromium': 'Chrome-like Browsers',
 	'firefox': 'Firefox',

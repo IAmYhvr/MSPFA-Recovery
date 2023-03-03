@@ -32,7 +32,7 @@ export default function GooglePicker() {
 					className="primary"
 					onClick={
 						useFunction(() => {
-							setBrowser('chromium');
+							setBrowser('chrome');
 
 							linkToCacheScanner();
 						})

@@ -13,32 +13,29 @@ export default function DataUpload() {
 
 	const triesRef = useRef(0);
 
-	const tryToFetch = useFunction(async () => {
+	const tryToFetch = useFunction(() => {
 		triesRef.current++;
 
-		let response;
-		try {
-			response = await fetch('/recover/api/data', {
-				method: 'POST',
-				body: JSON.stringify(data)
-			}).then(response => {
-				if (!response.ok) {
-					throw Error(`${response.status} ${response.statusText}\n${response.text()}`);
-				}
+		fetch('/recover/api/data', {
+			method: 'POST',
+			body: JSON.stringify(data),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then(response => {
+			if (!response.ok) {
+				throw Error(`${response.status} ${response.statusText}\n${response.text()}`);
+			}
 
-				return response;
-			});
-		} catch (error) {
-			if (triesRef.current < 10) {
+			setStatus('done');
+		}).catch((error: unknown) => {
+			if (triesRef.current < 3) {
 				tryToFetch();
 				return;
 			}
 
 			setError(error);
-			return;
-		}
-
-		setStatus('done');
+		});
 	});
 
 	const upload = useFunction(() => {
@@ -74,6 +71,7 @@ export default function DataUpload() {
 		if (error) {
 			return (
 				<>
+					<h1>Oops!</h1>
 					<p>An error occurred:</p>
 					<pre>{error.toString()}</pre>
 					<p>
@@ -90,7 +88,10 @@ export default function DataUpload() {
 
 		if (status === 'uploading') {
 			return (
-				<p>Uploading...</p>
+				<>
+					<h1>Almost done...</h1>
+					<p>Uploading...</p>
+				</>
 			);
 		}
 
@@ -106,6 +107,7 @@ export default function DataUpload() {
 
 		return (
 			<>
+				<h1>Ready to upload?</h1>
 				<button className="big primary" onClick={upload}>
 					Go!
 				</button>
@@ -119,7 +121,6 @@ export default function DataUpload() {
 
 	return (
 		<main style={{ maxWidth: '800px' }}>
-			<h1>Ready to upload?</h1>
 			{getContent()}
 		</main>
 	);

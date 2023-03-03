@@ -16,7 +16,7 @@ export default function BrowserPicker() {
 				Which browser are you using?
 			</p>
 			<p>
-				<BrowserButton value="chromium" label="Chrome" onClick={useLinkTo(GooglePicker)}>
+				<BrowserButton value="chrome" label="Chrome" onClick={useLinkTo(GooglePicker)}>
 					logos:chrome
 				</BrowserButton>
 				<BrowserButton value="firefox" label="Firefox" onClick={useLinkTo(CacheScanner)}>
