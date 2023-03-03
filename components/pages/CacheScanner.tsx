@@ -145,7 +145,7 @@ export default function CacheScanner() {
 			await setCacheMode();
 		}
 
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < 10; i++) {
 			CACHE_SCAN_TYPES.forEach(fetchNext);
 		}
 	});
