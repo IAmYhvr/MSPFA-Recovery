@@ -118,7 +118,9 @@ export default function HistoryFileBox({ historyFilename }: HistoryFileBoxProps)
 	});
 
 	return loading ? (
-		<div className="file-box loading" />
+		<div className="file-box loading">
+			Loading...
+		</div>
 	) : (
 		<div
 			className={`file-box${hovering ? ' hovering' : ''}`}

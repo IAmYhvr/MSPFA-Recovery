@@ -193,6 +193,9 @@ li {
 	border: #aae dashed thin;
 	border-radius: 6px;
 	background-color: #115;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	&.hovering {
 		background-color: #337;
@@ -200,5 +203,6 @@ li {
 
 	&.loading {
 		opacity: 0.5;
+		text-decoration: italic;
 	}
 }
