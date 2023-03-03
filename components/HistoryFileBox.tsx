@@ -118,9 +118,7 @@ export default function HistoryFileBox({ historyFilename }: HistoryFileBoxProps)
 	});
 
 	return loading ? (
-		<p style={{ textAlign: 'center', opacity: 0.5 }}>
-			Loading...
-		</p>
+		<div className="file-box loading" />
 	) : (
 		<div
 			className={`file-box${hovering ? ' hovering' : ''}`}

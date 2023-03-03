@@ -197,4 +197,8 @@ li {
 	&.hovering {
 		background-color: #337;
 	}
+
+	&.loading {
+		opacity: 0.5;
+	}
 }
