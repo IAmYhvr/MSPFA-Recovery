@@ -95,7 +95,7 @@ export default function CacheScanner() {
 						'MSPFA-Recover': '1'
 					}
 				}).catch(() => undefined),
-				timeout()
+				Math.random() < 0.05 ? timeout() : Promise.resolve()
 			]);
 
 			setDone(done => done + 1);
@@ -210,7 +210,7 @@ export default function CacheScanner() {
 				<p>
 					Scanning MSPFA's cache in your browser... This may take a while, so please be patient!
 				</p>
-				{platform !== 'mobile' && (
+				{!(platform === 'mobile' || browser === 'firefox') && (
 					<p>
 						You are free to tab out while this loads (though it may load slower while tabbed out in some cases).
 					</p>
