@@ -40,7 +40,7 @@ export default function FAQ() {
 
 			<h3>When will the site be back?</h3>
 			<p>
-				No clue, but rest assured we're working our asses off. It'll most likely be a couple weeks. There's a to-do list actively updated with our progress on the <a href="https://mspfa.com/discord">MSPFA Discord server</a>, pinned to the #mspfa-recovery channel.
+				No clue, but rest assured we're working our asses off. It'll most likely be a couple weeks. There's a to-do list actively updated with our progress on the <a href="https://mspfa.com/discord" target="_blank" rel="noreferrer">MSPFA Discord server</a>, pinned to the #mspfa-recovery channel.
 			</p>
 
 			<p>
