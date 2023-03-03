@@ -47,7 +47,7 @@
 	const getEntryDate = entry => {
 		const dateString = entry.getAttribute('data-date');
 		const stringWithTime = entry.firstChild.firstChild.lastChild.firstChild.lastChild.textContent;
-		const timeString = stringWithTime.slice(0, stringWithTime.indexOf('•')).trim();
+		const timeString = stringWithTime.slice(0, stringWithTime.indexOf('•')).trim().replace(/\./g, ':');
 		return new Date(dateString.slice(0, 4) + '-' + dateString.slice(4, 6) + '-' + dateString.slice(6) + ' ' + timeString);
 	};
 
@@ -281,12 +281,9 @@
 	const frame = () => {
 		try {
 			if (!onCorrectLocation()) {
-				if (confirm('Please activate this bookmark again after you\'re redirected to the Google activity page.')) {
-					const link = document.createElement('a');
-					link.target = '_blank';
-					link.href = 'https://myactivity.google.com/myactivity?q=mspfa.com&product=6';
-					link.click();
-				}
+				alert('Please activate this bookmark again after you are redirected to the Google activity page.\n\nIf your browser blocks the pop-up, please set it to be allowed and try again.');
+
+				window.open('https://myactivity.google.com/myactivity?q=mspfa.com&product=6');
 
 				return;
 			}
