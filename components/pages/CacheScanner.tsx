@@ -96,7 +96,7 @@ export default function CacheScanner() {
 					}
 				}).catch(() => undefined),
 				// The occasional timeout prevents the renderer from freezing.
-				Math.random() < 0.05 ? timeout() : Promise.resolve()
+				done % 100 === 0 && timeout()
 			]);
 
 			setDone(done => done + 1);
@@ -211,7 +211,7 @@ export default function CacheScanner() {
 				<p>
 					Scanning MSPFA's cache in your browser... This may take a while, so please be patient!
 				</p>
-				{!(platform === 'mobile' || browser === 'firefox') && (
+				{platform !== 'mobile' && (
 					<p>
 						You are free to tab out while this loads (though it may load slower while tabbed out in some cases).
 					</p>
