@@ -155,7 +155,7 @@ export default function CacheScanner() {
 	});
 
 	const linkToNext = useLinkTo(
-		platform === 'mobile'
+		platform === 'mobile' || browser === 'safari'
 			? TheEnd
 			: browser === 'chrome-with-google'
 				? GoogleActivityScanner
