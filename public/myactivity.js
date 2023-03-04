@@ -295,10 +295,7 @@
 	const frame = () => {
 		try {
 			if (!onCorrectLocation()) {
-				alert('Please activate this bookmark again after you are redirected to the Google activity page.\n\nIf your browser blocks the pop-up, please set it to be allowed and try again.');
-
-				window.open('https://myactivity.google.com/myactivity?q=mspfa.com&product=6');
-
+				alert('You\'re on the wrong page! Please click the link in the recovery page\'s instructions and try again.');
 				return;
 			}
 
@@ -307,7 +304,7 @@
 				return;
 			}
 
-			setStatus('This tab must be visible, or the loading will pause. Please be patient.\n\n(If this stops loading for no apparent reason, refresh the page and activate the bookmark again.)');
+			setStatus('Please be patient. This tab must be visible, or the loading will pause.\n\n(If this stops loading for no apparent reason, refresh the page and activate the bookmark again.)');
 
 			if (getLoading()) {
 				requestAnimationFrame(frame);

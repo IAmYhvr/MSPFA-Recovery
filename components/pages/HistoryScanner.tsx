@@ -50,22 +50,22 @@ export default function HistoryScanner() {
 				{browser === 'firefox' ? (
 					<>
 						<li>
-							Find the box that says "<b>This is the profile in use and it cannot be deleted.</b>" It looks like this:<br />
+							<p>
+								Find the box that says "<b>This is the profile in use and it cannot be deleted.</b>" It looks like this:
+							</p>
 							<img className="screenshot" src={`/recover/history/firefox-${platform}.png`} />
 						</li>
 						<li>
-							Next to <b>Root Directory</b>, click the <span className="fake-button">{openDirectoryButtonText}</span> button, outlined in red above.<br />
-							<br />
+							Next to <b>Root Directory</b>, click the <span className="fake-button">{openDirectoryButtonText}</span> button, outlined in red above.
 						</li>
 					</>
 				) : (
 					<>
 						<li>
-							Find the text "<b>{profilePathText}:</b>". It looks like this:<br />
+							<p>
+								Find "<b>{profilePathText}:</b>" and copy the text next to it, outlined in red below:
+							</p>
 							<img className="screenshot" src={`/recover/history/${effectiveBrowser}-${platform}.png`} />
-						</li>
-						<li>
-							Copy the text next to <b>{profilePathText}</b>, outlined in red above.
 						</li>
 						{platform === 'windows' ? (
 							<li>
@@ -78,8 +78,7 @@ export default function HistoryScanner() {
 									/>
 									Windows
 								</kbd>
-								{' + '}<kbd>R</kbd>, paste it into the box that appears, and press <kbd>Enter</kbd>.<br />
-								<br />
+								{' + '}<kbd>R</kbd>, paste the text into the box that appears, and press <kbd>Enter</kbd>.
 							</li>
 						) : platform === 'mac' ? (
 							<li>
@@ -92,13 +91,11 @@ export default function HistoryScanner() {
 									/>
 									Command
 								</kbd>
-									{' + '}<kbd>Shift</kbd> + <kbd>G</kbd>, paste it into the box that appears, and press <kbd>Enter</kbd>.<br />
-									<br />
+									{' + '}<kbd>Shift</kbd> + <kbd>G</kbd>, paste the text into the box that appears, and press <kbd>Enter</kbd>.
 							</li>
 						) : (
 							<li>
-								Open the directory path you copied. To do that, open a new terminal window, type <code>xdg-open</code>, add a space afterward, paste the path, and then press <kbd>Enter</kbd>.<br />
-								<br />
+								Open the directory path you copied. To do that, open a new terminal window, type <code>xdg-open</code>, add a space afterward, paste the path, and then press <kbd>Enter</kbd>.
 							</li>
 						)}
 					</>
