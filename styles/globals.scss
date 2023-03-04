@@ -165,12 +165,16 @@ footer {
 	font-size: 1.5em;
 }
 
-ol {
+ol:not(#faq *) {
 	margin-bottom: 1.5em;
 }
 
 li {
 	margin: 1.5em 0;
+
+	#faq & {
+		margin: 0.75em 0;
+	}
 }
 
 .bookmarklet {
