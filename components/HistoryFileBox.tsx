@@ -1,5 +1,4 @@
 import { useBrowser } from 'lib/BrowserContext';
-import { usePage } from 'lib/PageContext';
 import initSqlJs from 'sql.js/dist/sql-asm';
 import useFunction from 'lib/useFunction';
 import { DragEvent, useState } from 'react';
@@ -7,6 +6,7 @@ import { addDataByURL } from 'lib/addData';
 import TheEnd from 'components/pages/TheEnd';
 import { useData } from 'lib/DataContext';
 import BackButtonContainer from 'components/BackButtonContainer';
+import useLinkTo from 'lib/useLinkTo';
 
 export type HistoryFileBoxProps = {
 	historyFilename: string
@@ -15,7 +15,6 @@ export type HistoryFileBoxProps = {
 export default function HistoryFileBox({ historyFilename }: HistoryFileBoxProps) {
 	const data = useData();
 	const [browser] = useBrowser();
-	const [, setPage] = usePage();
 
 	const [hovering, setHovering] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -29,6 +28,8 @@ export default function HistoryFileBox({ historyFilename }: HistoryFileBoxProps)
 	const stopHovering = useFunction(() => {
 		setHovering(false);
 	});
+
+	const finish = useLinkTo(TheEnd);
 
 	const drop = useFunction(async (event: DragEvent) => {
 		event.preventDefault();
@@ -52,13 +53,9 @@ export default function HistoryFileBox({ historyFilename }: HistoryFileBoxProps)
 				value === null || typeof value === 'string'
 			);
 
-			const finish = () => {
-				setPage(() => TheEnd);
-			};
-
 			if (browser === 'firefox') {
 				db.each(
-					'SELECT last_visit_date, url, title, description, preview_image_url FROM "moz_places" WHERE url LIKE "https://mspfa.com/%"',
+					'SELECT last_visit_date, url, title, description, preview_image_url FROM moz_places WHERE url LIKE "https://mspfa.com/%"',
 					row => {
 						let {
 							last_visit_date: dateNumber,
@@ -87,7 +84,7 @@ export default function HistoryFileBox({ historyFilename }: HistoryFileBoxProps)
 				const DATE_OFFSET = +new Date('1601-01-01T00:00:00Z');
 
 				db.each(
-					'SELECT last_visit_time, url, title FROM "urls" WHERE url LIKE "https://mspfa.com/%"',
+					'SELECT last_visit_time, url, title FROM urls WHERE url LIKE "https://mspfa.com/%"',
 					row => {
 						let {
 							last_visit_time: dateNumber,
@@ -111,6 +108,11 @@ export default function HistoryFileBox({ historyFilename }: HistoryFileBoxProps)
 				);
 			}
 		} catch (error: unknown) {
+			if (error instanceof Error && error.message.startsWith('no such table: ')) {
+				finish();
+				return;
+			}
+
 			console.error(error);
 			alert('That file is invalid!\n\nIf you believe this is a mistake, report this to Grant#2604 on Discord (or support@mspfa.com if you can\'t use Discord).')
 
