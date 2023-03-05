@@ -108,7 +108,7 @@ export default function HistoryFileBox({ historyFilename }: HistoryFileBoxProps)
 				);
 			}
 		} catch (error: unknown) {
-			if (error instanceof Error && error.message.startsWith('no such table: ')) {
+			if (error instanceof Error && error.message.startsWith('no such table:')) {
 				finish();
 				return;
 			}
