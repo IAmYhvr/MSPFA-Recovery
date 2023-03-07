@@ -10,7 +10,7 @@ import { useData } from 'lib/DataContext';
 import { MAX_DATE_NUMBER, MIN_STORY_DATE_NUMBER } from 'lib/dates';
 import { usePlatform } from 'lib/PlatformContext';
 import STORY_IDS from 'lib/STORY_IDS';
-import timeout from 'lib/timeout';
+import timeOut from 'lib/timeOut';
 import useFunction from 'lib/useFunction';
 import useLeaveConfirmation from 'lib/useLeaveConfirmation';
 import useLinkTo from 'lib/useLinkTo';
@@ -50,6 +50,8 @@ export default function CacheScanner() {
 	});
 	const storyIDIndexes = storyIDIndexesRef.current;
 
+	const lastTimeoutRef = useRef(Date.now());
+
 	const cacheModeRef = useRef<'only-if-cached' | 'force-cache'>();
 
 	const setCacheMode = useFunction(() => (
@@ -78,6 +80,14 @@ export default function CacheScanner() {
 
 		const urlString = getURLString[type](storyID);
 
+		// The occasional timeout prevents the renderer from freezing.
+		let timeout;
+		const now = Date.now();
+		if (lastTimeoutRef.current < now - 10) {
+			timeout = timeOut();
+			lastTimeoutRef.current = now;
+		}
+
 		let tries = 0;
 
 		const tryToFetch = async () => {
@@ -96,7 +106,7 @@ export default function CacheScanner() {
 					}
 				}).catch(() => undefined),
 				// The occasional timeout prevents the renderer from freezing.
-				done % 100 === 0 && timeout()
+				timeout
 			]);
 
 			setDone(done => done + 1);
@@ -142,6 +152,10 @@ export default function CacheScanner() {
 		tryToFetch();
 	});
 
+	const runFetchLoop = useFunction(async (type: CacheScanType) => {
+
+	});
+
 	const start = useFunction(async () => {
 		setStarted(true);
 
@@ -150,7 +164,7 @@ export default function CacheScanner() {
 		}
 
 		for (let i = 0; i < 10; i++) {
-			CACHE_SCAN_TYPES.forEach(fetchNext);
+			CACHE_SCAN_TYPES.forEach(runFetchLoop);
 		}
 	});
 
