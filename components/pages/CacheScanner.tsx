@@ -36,7 +36,6 @@ export default function CacheScanner() {
 	const data = useData();
 
 	const [started, setStarted] = useState(false);
-	const [error, setError] = useState<unknown>();
 	const [done, setDone] = useState(0);
 
 	useLeaveConfirmation(started);
@@ -65,17 +64,7 @@ export default function CacheScanner() {
 		})
 	));
 
-	const fetchNext = useFunction((type: CacheScanType) => {
-		if (error) {
-			return;
-		}
-
-		const storyIDIndex = storyIDIndexes[type];
-		const storyID = STORY_IDS[storyIDIndex];
-		if (storyID === undefined) {
-			return;
-		}
-
+	const fetchNext = useFunction(async (type: CacheScanType, storyID: number) => {
 		storyIDIndexes[type]++;
 
 		const urlString = getURLString[type](storyID);
@@ -88,72 +77,67 @@ export default function CacheScanner() {
 			lastTimeoutRef.current = now;
 		}
 
-		let tries = 0;
+		const [response] = await Promise.all([
+			fetch(urlString, {
+				cache: cacheModeRef.current,
+				mode: 'same-origin',
+				headers: {
+					'MSPFA-Recover': '1'
+				}
+			}).catch(() => undefined),
+			timeout
+		]);
 
-		const tryToFetch = async () => {
-			if (error) {
-				return;
-			}
+		setDone(done => done + 1);
 
-			tries++;
+		if (!response?.ok) {
+			return;
+		}
 
-			const [response] = await Promise.all([
-				fetch(urlString, {
-					cache: cacheModeRef.current,
-					mode: 'same-origin',
-					headers: {
-						'MSPFA-Recover': '1'
-					}
-				}).catch(() => undefined),
-				// The occasional timeout prevents the renderer from freezing.
-				timeout
-			]);
+		const dateString = response.headers.get('Date');
 
-			setDone(done => done + 1);
-			fetchNext(type);
+		if (!dateString) {
+			return;
+		}
 
-			if (!response?.ok) {
-				return;
-			}
+		const dateNumber = +new Date(dateString);
 
-			const dateString = response.headers.get('Date');
+		if (!dateNumber || dateNumber < MIN_STORY_DATE_NUMBER || dateNumber > MAX_DATE_NUMBER) {
+			return;
+		}
 
-			if (!dateString) {
-				return;
-			}
+		const text = await response.text();
 
-			const dateNumber = +new Date(dateString);
+		const entry: Entry = {};
 
-			if (!dateNumber || dateNumber < MIN_STORY_DATE_NUMBER || dateNumber > MAX_DATE_NUMBER) {
-				return;
-			}
-
-			const text = await response.text();
-
-			const entry: Entry = {};
-
-			if (type === 'css' || type === 'js') {
-				entry[type] = text;
-
-				addData(data, 'stories', storyID, dateNumber, entry);
-				return;
-			}
-
-			const { head } = new DOMParser().parseFromString(text, 'text/html');
-
-			entry.name = head.getElementsByTagName('title')[0]?.textContent || '';
-			entry.description = head.querySelector<HTMLMetaElement>('meta[property="og:description"]')?.content;
-			entry.icon = head.querySelector<HTMLMetaElement>('meta[property="og:icon"]')?.content;
-			entry.author = head.querySelector<HTMLMetaElement>('meta[name="author"]')?.content;
+		if (type === 'css' || type === 'js') {
+			entry[type] = text;
 
 			addData(data, 'stories', storyID, dateNumber, entry);
-		};
+			return;
+		}
 
-		tryToFetch();
+		const { head } = new DOMParser().parseFromString(text, 'text/html');
+
+		entry.name = head.getElementsByTagName('title')[0]?.textContent || '';
+		entry.description = head.querySelector<HTMLMetaElement>('meta[property="og:description"]')?.content;
+		entry.icon = head.querySelector<HTMLMetaElement>('meta[property="og:icon"]')?.content;
+		entry.author = head.querySelector<HTMLMetaElement>('meta[name="author"]')?.content;
+
+		addData(data, 'stories', storyID, dateNumber, entry);
 	});
 
 	const runFetchLoop = useFunction(async (type: CacheScanType) => {
+		while (true) {
+			const storyIDIndex = storyIDIndexes[type];
 
+			const storyID = STORY_IDS[storyIDIndex];
+			if (storyID === undefined) {
+				return;
+			}
+
+			await fetchNext(type, storyID);
+		}
 	});
 
 	const start = useFunction(async () => {
@@ -187,20 +171,6 @@ export default function CacheScanner() {
 						Start Cache Scan
 					</button>
 					<BackButtonContainer />
-				</>
-			);
-		}
-
-		if (error) {
-			return (
-				<>
-					<p>
-						An error occurred:
-					</p>
-					<pre>{error.toString()}</pre>
-					<p>
-						Check your network connection and try again after refreshing the page. If the issue persists after retrying, report this to Grant#2604 on Discord (or support@mspfa.com if you can't use Discord).
-					</p>
 				</>
 			);
 		}
