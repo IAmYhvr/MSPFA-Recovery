@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	const parentPath = path.join(process.cwd(), '..', 'raw-data');
 	// await fs.promises.mkdir(parentPath, { recursive: true });
 
-	const id = encodeURIComponent(String(req.headers['mspfa-url'])).replace(/%/g, '_');
+	const id = encodeURIComponent(String(req.headers['mspfa-url'])).replace(/%/g, '_').slice(0, 200);
 	const filename = `${id}.html.gz`;
 	const filePath = path.join(parentPath, filename);
 
