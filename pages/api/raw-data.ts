@@ -31,23 +31,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		return;
 	}
 
-	let url;
-	try {
-		url = new URL(String(req.headers['mspfa-url']));
-	} catch {
-		res.status(500).end();
-		return;
-	}
-
-	if (url.hostname !== 'mspfa.com') {
-		res.status(500).end();
-		return;
-	}
-
 	const parentPath = path.join(process.cwd(), '..', 'raw-data');
-	await fs.promises.mkdir(parentPath, { recursive: true });
+	// await fs.promises.mkdir(parentPath, { recursive: true });
 
-	const id = encodeURIComponent(url.pathname + url.search).replace(/%/g, '_');
+	const id = encodeURIComponent(String(req.headers['mspfa-url'])).replace(/%/g, '_');
 	const filename = `${id}.html.gz`;
 	const filePath = path.join(parentPath, filename);
 
