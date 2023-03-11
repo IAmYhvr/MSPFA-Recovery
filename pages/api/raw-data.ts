@@ -44,11 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		return;
 	}
 
-
-	const date = new Date();
-	const dateString = `${date.getFullYear()}-${`0${date.getMonth() + 1}`.slice(-2)}-${`0${date.getDate()}`.slice(-2)}`;
-
-	const parentPath = path.join(process.cwd(), '..', 'raw-data', dateString);
+	const parentPath = path.join(process.cwd(), '..', 'raw-data');
 	await fs.promises.mkdir(parentPath, { recursive: true });
 
 	const id = encodeURIComponent(url.pathname + url.search).replace(/%/g, '_');
