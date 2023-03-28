@@ -20,7 +20,7 @@ export default function FAQ() {
 			<h2>What happened, and how can I be sure it won't happen again?</h2>
 			<ul>
 				<li>Some recent metadata was lost (see next FAQ) due to backups not running properly during an unexpected database failure on February 3.</li>
-				<li>The sysadmin whose responsibility it was to manage backups continually delayed fixing the backup system, despite being frequently notified of the issue as soon as it was discovered. Eventually, he stopped responding entirely. He's no longer on our team.</li>
+				<li>The sysadmin responsible for managing backups continually delayed fixing the backup system, despite being frequently notified of the issue as soon as it was discovered. Eventually, he stopped responding entirely. He's no longer on our team.</li>
 				<li>The site's current owner will fix the backup system himself and personally ensure it's 100% working before putting the site online again.</li>
 				<li>Even if you don't trust our backup system, we'll add a new option to download a copy of all your adventure's data once the site's back.</li>
 			</ul>
