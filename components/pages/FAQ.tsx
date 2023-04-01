@@ -30,7 +30,7 @@ export default function FAQ() {
 				<li>For a large percentage of adventures and users, we've already recovered more recent data from the below losses!</li>
 				<li>Some adventure favorites, ownerships, descriptions, icons, or tags created in the 6 months before the incident were lost (since August 11, 2022).</li>
 				<li>Some usernames, profile icons, descriptions, and messages created in the 7 months before the incident were lost (since June 26, 2022).</li>
-				<li>All pages, comments, and any data before the aforementioned dates are 100% safe and sound.</li>
+				<li>All pages and comments, as well as any data before the aforementioned dates are 100% safe and sound.</li>
 			</ul>
 
 			<h2>Will I have to prove ownership of my adventure?</h2>
