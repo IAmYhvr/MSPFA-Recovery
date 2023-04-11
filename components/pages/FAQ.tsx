@@ -1,7 +1,3 @@
-import BackButtonContainer from 'components/BackButtonContainer';
-import PlatformPicker from 'components/pages/PlatformPicker';
-import useLinkTo from 'lib/useLinkTo';
-
 export default function FAQ() {
 	return (
 		<main id="faq" style={{ maxWidth: '850px' }}>
@@ -40,16 +36,13 @@ export default function FAQ() {
 
 			<h2>When will the site be back?</h2>
 			<p>
-				No clue, but rest assured we're working our asses off. It'll most likely be a couple weeks. There's a to-do list actively updated with our progress in the <a href="https://mspfa.com/discord" target="_blank" rel="noreferrer">MSPFA Discord server</a>, pinned to the #mspfa-recovery channel.
+				No clue, but rest assured we're working our asses off. It'll most likely be another week or two. There's a to-do list actively updated with our progress in the <a href="https://mspfa.com/discord" target="_blank" rel="noreferrer">MSPFA Discord server</a>, pinned to the #mspfa-recovery channel.
 			</p>
 
+			<h2>How can I help?</h2>
 			<p>
-				<button className="big primary" onClick={useLinkTo(PlatformPicker)}>
-					How can I help?
-				</button>
+				This website used to host a tool you could use to help recover some data, but we've collected enough and no longer have the tool available. Thanks everyone who submitted data to help us recover!
 			</p>
-
-			<BackButtonContainer />
 		</main>
 	);
 }

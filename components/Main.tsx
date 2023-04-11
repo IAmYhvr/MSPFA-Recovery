@@ -1,4 +1,4 @@
-import Home from 'components/pages/Home';
+import FAQ from 'components/pages/FAQ';
 import BrowserContext, { Browser } from 'lib/BrowserContext';
 import Data from 'lib/Data';
 import { DataContext } from 'lib/DataContext';
@@ -13,7 +13,7 @@ export default function Main() {
 	});
 	const data = dataRef.current;
 
-	const [Page, setPage] = useState(() => Home);
+	const [Page, setPage] = useState(() => FAQ);
 	const pageState = useMemo(() => (
 		[Page, setPage] as const
 	), [Page, setPage]);
