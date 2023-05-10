@@ -29,7 +29,7 @@ export default function FAQ() {
 				Visit the #reclaim-your-adventure channel in the <a href="https://mspfa.com/discord" target="_blank" rel="noreferrer">MSPFA Discord server</a>, and we can help you out!
 			</p>
 			<p>
-				<strong>Even if you don't care about an adventure you lost ownership of</strong>, <em>please</em> still make a post there. We want there to be as few adventures with missing owners as possible--it helps our data management, archival, and everyone's user experience.
+				<strong>Even if you don't care about an adventure you lost ownership of</strong>, <em>please</em> still make a post there. We want there to be as few adventures with missing owners as possible--it helps our data management, archival, and everyone's user experience. You can also make a post there if you aren't the owner but know who is.
 			</p>
 			<p>
 				If you aren't able to use Discord, you can also contact us via email at <a href="mailto:support@mspfa.com" target="_blank">support@mspfa.com</a>, but our response time may be slower due to the asynchronous nature of email. (Also, we're still repairing our email system, so you'll have to wait a few days before we're able to send replies.)
