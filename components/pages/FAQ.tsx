@@ -26,7 +26,7 @@ export default function FAQ() {
 
 			<h2>I lost ownership of my adventure! What do I do?</h2>
 			<p>
-				Visit the #reclaim-your-adventure channel in the <a href="https://mspfa.com/discord" target="_blank" rel="noreferrer">MSPFA Discord server</a>, and we can help you out!
+				Visit the #adventure-reclaim channel under the "HELP" category in the <a href="https://mspfa.com/discord" target="_blank" rel="noreferrer">MSPFA Discord server</a>, and we can help you out!
 			</p>
 			<p>
 				<strong>Even if you don't care about an adventure you lost ownership of</strong>, <em>please</em> still make a post there. We want there to be as few adventures with missing owners as possible--it helps our data management, archival, and everyone's user experience. You can also make a post there if you aren't the owner but know who is.
